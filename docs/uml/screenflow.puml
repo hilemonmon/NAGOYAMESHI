@@ -1,0 +1,77 @@
+@startuml screenflow
+left to right direction
+skinparam linetype ortho
+skinparam defaultTextAlignment left
+skinparam nodesep 50
+skinparam ranksep 80
+skinparam rectangle {
+  BackgroundColor White
+  BorderColor Black
+}
+
+' === トップ・認証 ===
+rectangle "トップページ\n\n【設置要素】\n・ログインリンク\n・会員登録リンク\n・店舗検索フォーム" as TopPage
+rectangle "ログインページ\n\n【設置要素】\n・メール/パスワード入力\n・ログインボタン" as LoginPage
+rectangle "会員登録ページ\n\n【設置要素】\n・氏名・メール・パスワード入力\n・登録ボタン\n・キャンセルリンク" as RegisterPage
+
+' === 店舗閲覧系 ===
+rectangle "店舗一覧ページ\n\n【設置要素】\n・店舗カード一覧" as StoreListPage
+rectangle "店舗詳細ページ\n\n【設置要素】\n・店舗情報\n・レビュー表示\n・予約ボタン\n・お気に入りボタン\n・レビュー投稿ボタン" as StoreDetailPage
+
+' === マイページ系 ===
+rectangle "マイページ\n\n【設置要素】\n・会員情報リンク\n・お気に入りリンク\n・予約一覧リンク\n・サブスク管理リンク\n・退会リンク" as Mypage
+rectangle "会員情報編集ページ\n\n【設置要素】\n・氏名・メール編集欄\n・パスワード編集欄\n・保存ボタン" as ProfileEditPage
+rectangle "会員詳細ページ\n\n【設置要素】\n・会員の全属性表示" as ProfileDetailPage
+rectangle "退会確認モーダル\n\n【設置要素】\n・確認テキスト\n・退会実行ボタン\n・キャンセルボタン" as WithdrawConfirm
+
+' === お気に入り・レビュー ===
+rectangle "お気に入り一覧ページ\n\n【設置要素】\n・お気に入り店舗リスト" as FavoriteListPage
+rectangle "レビュー投稿ページ\n\n【設置要素】\n・レビュー入力欄\n・投稿ボタン\n・キャンセルボタン" as ReviewPostPage
+
+' === 予約関連 ===
+rectangle "予約フォームページ\n\n【設置要素】\n・日時・人数選択欄\n・確認ボタン" as ReservationForm
+rectangle "予約確認モーダル\n\n【設置要素】\n・選択情報の確認\n・予約確定ボタン\n・キャンセルボタン" as ReservationConfirm
+rectangle "予約一覧ページ\n\n【設置要素】\n・予約履歴リスト" as ReservationListPage
+
+' === サブスク ===
+rectangle "有料会員販促ページ\n\n【設置要素】\n・有料会員の特典説明\n・登録ボタン" as SubscriptionPromoPage
+rectangle "クレジットカード登録ページ\n\n【設置要素】\n・カード情報入力欄\n・登録実行ボタン" as SubscriptionPaymentPage
+rectangle "サブスク管理ページ\n\n【設置要素】\n・契約情報表示\n・解約・カード変更リンク" as SubscriptionManagePage
+
+' === 遷移 ===
+TopPage --> LoginPage : ログイン\nリンクをクリック
+TopPage --> RegisterPage : 会員登録\nリンクをクリック
+TopPage --> StoreListPage : 検索フォーム\n送信
+
+LoginPage --> StoreListPage : ログイン\n成功
+LoginPage --> TopPage : ログイン\n失敗
+
+RegisterPage --> StoreListPage : 登録\n成功
+RegisterPage --> TopPage : キャンセル\nクリック
+
+StoreListPage --> StoreDetailPage : 店舗カード\nをクリック
+StoreDetailPage --> ReservationForm : 予約ボタン\nをクリック（有料会員）
+StoreDetailPage --> ReviewPostPage : レビュー投稿\nをクリック（有料会員）
+StoreDetailPage --> SubscriptionPromoPage : 予約ボタン\nをクリック（無料会員）
+StoreDetailPage --> SubscriptionPromoPage : レビュー投稿\nをクリック（無料会員）
+StoreDetailPage --> FavoriteListPage : お気に入りボタン\nをクリック（有料会員）
+
+ReviewPostPage --> StoreDetailPage : 投稿\n完了
+ReviewPostPage --> StoreDetailPage : キャンセル\nクリック
+
+ReservationForm --> ReservationConfirm : 確認ボタン\nクリック
+ReservationConfirm --> ReservationListPage : 予約確定\nクリック
+ReservationConfirm --> ReservationForm : キャンセル\nクリック
+
+Mypage --> ProfileDetailPage : 会員詳細リンク\nクリック
+ProfileDetailPage --> ProfileEditPage : 編集リンク\nクリック
+Mypage --> FavoriteListPage : お気に入りリンク\nクリック
+Mypage --> ReservationListPage : 予約一覧リンク\nクリック
+Mypage --> SubscriptionPromoPage : 有料登録\nリンクをクリック
+SubscriptionPromoPage --> SubscriptionPaymentPage : 登録ボタン\nクリック
+Mypage --> SubscriptionManagePage : サブスク管理\nリンククリック
+Mypage --> WithdrawConfirm : 退会リンク\nクリック
+
+WithdrawConfirm --> TopPage : 退会実行\nクリック
+WithdrawConfirm --> Mypage : キャンセル\nクリック
+@enduml

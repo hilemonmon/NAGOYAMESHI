@@ -1,0 +1,55 @@
+@startuml admin_screenflow
+left to right direction
+skinparam linetype ortho
+skinparam defaultTextAlignment left
+skinparam nodesep 50
+skinparam ranksep 50
+skinparam rectangle {
+  BackgroundColor White
+  BorderColor Black
+}
+
+' === 認証・ダッシュボード ===
+rectangle "管理者ログインページ\n\n【設置要素】\n・メール/パスワード入力\n・ログインボタン" as AdminLogin
+rectangle "管理者ダッシュボード\n\n【設置要素】\n・統計ウィジェット\n・店舗/会員/売上/予約数表示" as AdminDashboard
+
+' === 基本情報設定 ===
+rectangle "会社概要編集ページ\n\n【設置要素】\n・会社名、住所等の入力欄\n・保存ボタン" as CompanyInfo
+rectangle "利用規約編集ページ\n\n【設置要素】\n・規約本文エディタ\n・保存ボタン" as TermsEdit
+
+' === 店舗管理 ===
+rectangle "店舗一覧ページ（管理）\n\n【設置要素】\n・検索フォーム\n・店舗リスト\n・編集・削除リンク" as StoreAdminList
+rectangle "店舗編集ページ\n\n【設置要素】\n・店舗情報入力欄\n・保存ボタン" as StoreEdit
+rectangle "店舗登録ページ\n\n【設置要素】\n・新規店舗情報入力欄\n・登録ボタン" as StoreCreate
+
+' === レビュー管理 ===
+rectangle "レビュー一覧ページ（管理）\n\n【設置要素】\n・レビューリスト\n・削除ボタン" as ReviewAdminList
+
+' === 会員管理 ===
+rectangle "会員一覧ページ（管理）\n\n【設置要素】\n・検索フォーム（フリガナ）\n・会員リスト\n・詳細リンク" as MemberList
+rectangle "会員詳細ページ（管理）\n\n【設置要素】\n・氏名、メールなど表示" as MemberDetail
+
+' === カテゴリ管理 ===
+rectangle "カテゴリ一覧ページ\n\n【設置要素】\n・カテゴリリスト\n・編集・削除ボタン" as CategoryList
+rectangle "カテゴリ編集ページ\n\n【設置要素】\n・カテゴリ名入力欄\n・保存ボタン" as CategoryEdit
+rectangle "カテゴリ登録ページ\n\n【設置要素】\n・新規カテゴリ名入力欄\n・登録ボタン" as CategoryCreate
+
+' === 遷移定義 ===
+AdminLogin --> AdminDashboard : ログイン成功
+
+AdminDashboard --> CompanyInfo : 会社概要\n編集をクリック
+AdminDashboard --> TermsEdit : 利用規約\n編集をクリック
+
+AdminDashboard --> StoreAdminList : 店舗管理\nをクリック
+StoreAdminList --> StoreEdit : 編集リンク\nをクリック
+StoreAdminList --> StoreCreate : 新規登録\nをクリック
+
+AdminDashboard --> ReviewAdminList : レビュー一覧\nをクリック
+
+AdminDashboard --> MemberList : 会員管理\nをクリック
+MemberList --> MemberDetail : 詳細リンク\nクリック
+
+AdminDashboard --> CategoryList : カテゴリ管理\nをクリック
+CategoryList --> CategoryEdit : 編集リンク\nクリック
+CategoryList --> CategoryCreate : 新規登録\nクリック
+@enduml

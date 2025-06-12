@@ -1,0 +1,43 @@
+@startuml reservationflow
+
+skinparam defaultTextAlignment left
+skinparam nodesep 50
+skinparam ranksep 50
+skinparam linetype ortho
+
+start
+
+:店舗詳細ページにアクセス;
+:予約ボタンをクリック;
+
+if (ログイン済み？) then (はい)
+  if (有料会員？) then (はい)
+    :予約フォームを表示;
+    :日時・人数を入力;
+
+    if (入力内容は有効？) then (はい)
+      :確認ボタンをクリック;
+      :予約確認モーダルを表示;
+
+      if (確定をクリック？) then (はい)
+        :予約情報を登録;
+        :予約一覧ページへ遷移;
+      else (キャンセル)
+        :予約フォームに戻る;
+      endif
+
+    else (いいえ)
+      :エラーメッセージを表示;
+      :予約フォームに戻る;
+    endif
+
+  else (いいえ)
+    :有料会員登録ページへリダイレクト;
+  endif
+
+else (いいえ)
+  :ログインページへリダイレクト;
+endif
+
+stop
+@enduml
