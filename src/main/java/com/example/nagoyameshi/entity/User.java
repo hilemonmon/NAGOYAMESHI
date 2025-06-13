@@ -3,6 +3,8 @@ package com.example.nagoyameshi.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,8 +42,11 @@ public class User {
     private LocalDate birthday;
 
     private String occupation;
-
+  
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
 
     private String password;
 
@@ -56,4 +61,6 @@ public class User {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private String verificationCode;
 }
