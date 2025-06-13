@@ -1,7 +1,6 @@
 package com.example.nagoyameshi.service;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,7 +24,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;
     private final VerificationTokenRepository verificationTokenRepository;
 
     @Override
@@ -34,8 +32,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new IllegalArgumentException("Email already registered");
         }
         String encoded = passwordEncoder.encode(request.getPassword());
-        // メール認証用のランダムなトークンを生成
-        String token = UUID.randomUUID().toString();
         Role role = roleRepository.findByName("ROLE_FREE_MEMBER")
                 .orElseThrow();
         // ユーザー情報を保存（この時点ではまだ有効化されていない）
@@ -50,7 +46,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .build();
         userRepository.save(user);
 
-        // 発行したトークンをverification_tokensテーブルに保存
+        // メールはイベントリスナーで送信されるため、ここでは登録のみ行う
+        return user;
+    }
+
+    @Override
+    public void createVerificationToken(User user, String token) {
         VerificationToken vToken = VerificationToken.builder()
                 .user(user)
                 .token(token)
@@ -58,10 +59,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .updatedAt(java.time.LocalDateTime.now())
                 .build();
         verificationTokenRepository.save(vToken);
-
-        // 確認メールを送信
-        emailService.sendVerificationEmail(user, token);
-        return user;
     }
 
     @Override
