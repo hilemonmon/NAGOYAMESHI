@@ -1,7 +1,6 @@
 package com.example.nagoyameshi.service;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,8 +11,10 @@ import org.springframework.stereotype.Service;
 import com.example.nagoyameshi.dto.RegisterRequest;
 import com.example.nagoyameshi.entity.Role;
 import com.example.nagoyameshi.entity.User;
+import com.example.nagoyameshi.entity.VerificationToken;
 import com.example.nagoyameshi.repository.RoleRepository;
 import com.example.nagoyameshi.repository.UserRepository;
+import com.example.nagoyameshi.repository.VerificationTokenRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +24,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;
+    private final VerificationTokenRepository verificationTokenRepository;
 
     @Override
     public User register(RegisterRequest request) {
@@ -31,9 +32,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new IllegalArgumentException("Email already registered");
         }
         String encoded = passwordEncoder.encode(request.getPassword());
-        String token = UUID.randomUUID().toString();
         Role role = roleRepository.findByName("ROLE_FREE_MEMBER")
                 .orElseThrow();
+        // ユーザー情報を保存（この時点ではまだ有効化されていない）
         User user = User.builder()
                 .name("")
                 .email(request.getEmail())
@@ -42,22 +43,32 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .enabled(false)
                 .createdAt(java.time.LocalDateTime.now())
                 .updatedAt(java.time.LocalDateTime.now())
-                .verificationCode(token)
                 .build();
         userRepository.save(user);
-        emailService.sendVerificationEmail(user);
+
+        // メールはイベントリスナーで送信されるため、ここでは登録のみ行う
         return user;
     }
 
     @Override
+    public void createVerificationToken(User user, String token) {
+        VerificationToken vToken = VerificationToken.builder()
+                .user(user)
+                .token(token)
+                .createdAt(java.time.LocalDateTime.now())
+                .updatedAt(java.time.LocalDateTime.now())
+                .build();
+        verificationTokenRepository.save(vToken);
+    }
+
+    @Override
     public boolean verify(String token) {
-        Optional<User> opt = userRepository.findByVerificationCode(token);
+        Optional<VerificationToken> opt = verificationTokenRepository.findByToken(token);
         if (opt.isEmpty()) {
             return false;
         }
-        User user = opt.get();
+        User user = opt.get().getUser();
         user.setEnabled(true);
-        user.setVerificationCode(null);
         userRepository.save(user);
         return true;
     }
