@@ -28,8 +28,9 @@ public class AuthController {
                                          HttpServletRequest httpRequest) {
         // ユーザー登録処理を実行
         com.example.nagoyameshi.entity.User user = userService.register(request);
-        // リクエストURLからベースURLを作成し /signup を付与
-        String baseUrl = httpRequest.getRequestURL().toString().replace("/register", "/signup");
+        // リクエストURLからドメイン部分のみを取得する
+        // 例: http://localhost:8080/register -> http://localhost:8080
+        String baseUrl = httpRequest.getRequestURL().toString().replace("/register", "");
         signupEventPublisher.publish(user, baseUrl);
         return ResponseEntity.ok().build();
     }

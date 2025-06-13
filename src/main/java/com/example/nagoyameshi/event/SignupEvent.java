@@ -14,13 +14,13 @@ import lombok.Getter;
 public class SignupEvent extends ApplicationEvent {
     /** 登録したユーザー */
     private final User user;
-    /** リクエストを受けたURL (例: https://ドメイン名/signup) */
+    /** アプリケーションのベースURL (例: https://ドメイン名) */
     private final String requestUrl;
 
     /**
      * @param source     イベントの発生元 (Publisher のインスタンス)
      * @param user       登録ユーザー
-     * @param requestUrl リクエストURL
+     * @param requestUrl アプリケーションのベースURL
      */
     public SignupEvent(Object source, User user, String requestUrl) {
         super(source);
