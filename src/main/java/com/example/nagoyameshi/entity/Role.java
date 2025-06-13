@@ -1,8 +1,5 @@
 package com.example.nagoyameshi.entity;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,37 +12,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "restaurants")
+@Table(name = "roles")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Restaurant {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-
-    private String image;
-
-    private String description;
-
-    private Integer lowestPrice;
-
-    private Integer highestPrice;
-
-    private String postalCode;
-
-    private String address;
-
-    private LocalTime openingTime;
-
-    private LocalTime closingTime;
-
-    private Integer seatingCapacity;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

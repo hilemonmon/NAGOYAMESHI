@@ -1,7 +1,6 @@
 package com.example.nagoyameshi.entity;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,35 +14,29 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "restaurants")
+@Table(name = "companies")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Restaurant {
+public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
-    private String image;
-
-    private String description;
-
-    private Integer lowestPrice;
-
-    private Integer highestPrice;
-
     private String postalCode;
 
     private String address;
 
-    private LocalTime openingTime;
+    private String representative;
 
-    private LocalTime closingTime;
+    private String capital;
 
-    private Integer seatingCapacity;
+    private String business;
+
+    private String numberOfEmployees;
 
     private LocalDateTime createdAt;
 
