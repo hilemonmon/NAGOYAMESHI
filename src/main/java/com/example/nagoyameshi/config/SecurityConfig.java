@@ -5,8 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.nagoyameshi.service.UserServiceImpl;
 
@@ -16,7 +14,17 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+    /*
+     * PasswordEncoder は別クラス(PasswordConfig)で定義し、
+     * UserServiceImpl が依存する Bean を分離することで
+     * 循環依存を防止している。
+     */
 
+    /**
+     * 認証時にユーザー情報を取得するサービス実装です。
+     * UserServiceImpl は UserDetailsService を実装しているため、
+     * SecurityFilterChain の設定にそのまま利用できます。
+     */
     private final UserServiceImpl userService;
 
     @Bean
@@ -54,8 +62,4 @@ public class SecurityConfig {
             .build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
