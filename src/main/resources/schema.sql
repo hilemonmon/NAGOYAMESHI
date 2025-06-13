@@ -18,7 +18,6 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     role_id INT NOT NULL,
     enabled BOOLEAN NOT NULL DEFAULT TRUE,
-    verification_code VARCHAR(255),
     stripe_customer_id VARCHAR(255),
     created_at DATETIME NOT NULL,
     updated_at DATETIME NOT NULL,
