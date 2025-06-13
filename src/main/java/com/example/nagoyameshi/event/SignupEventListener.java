@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class SignupEventListener {
     private final JavaMailSender mailSender;
     private final UserService userService;
-    // application.properties で設定した送信元アドレスを注入
+    // application.properties の spring.mail.from プロパティを注入
     @Value("${spring.mail.from}")
     private String fromAddress;
 
