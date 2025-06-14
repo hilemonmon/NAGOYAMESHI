@@ -1,5 +1,7 @@
 package com.example.nagoyameshi.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +14,7 @@ import com.example.nagoyameshi.dto.RegisterRequest;
 import com.example.nagoyameshi.entity.Role;
 import com.example.nagoyameshi.entity.User;
 import com.example.nagoyameshi.entity.VerificationToken;
+import com.example.nagoyameshi.form.SignupForm;
 import com.example.nagoyameshi.repository.RoleRepository;
 import com.example.nagoyameshi.repository.UserRepository;
 import com.example.nagoyameshi.repository.VerificationTokenRepository;
@@ -82,5 +85,54 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .roles(user.getRole().getName())
                 .disabled(!user.isEnabled())
                 .build();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void createUser(SignupForm form) {
+        Role role = roleRepository.findByName("ROLE_FREE_MEMBER").orElseThrow();
+
+        User user = User.builder()
+                .name(form.getName())
+                .furigana(form.getFurigana())
+                .postalCode(form.getPostalCode())
+                .address(form.getAddress())
+                .phoneNumber(form.getPhoneNumber())
+                .birthday(form.getBirthday() == null || form.getBirthday().isEmpty()
+                        ? null
+                        : LocalDate.parse(form.getBirthday()))
+                .occupation(form.getOccupation() == null || form.getOccupation().isEmpty()
+                        ? null
+                        : form.getOccupation())
+                .email(form.getEmail())
+                .password(passwordEncoder.encode(form.getPassword()))
+                .role(role)
+                .enabled(true)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        userRepository.save(user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isEmailRegistered(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isSamePassword(String password, String passwordConfirmation) {
+        if (password == null) {
+            return passwordConfirmation == null;
+        }
+        return password.equals(passwordConfirmation);
     }
 }
