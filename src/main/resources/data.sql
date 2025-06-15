@@ -1,4 +1,4 @@
-# Sample data for NAGOYAMESHI
+-- Sample data for NAGOYAMESHI
 
 /* rolesテーブル */
 INSERT IGNORE INTO roles (id, name) VALUES
