@@ -62,6 +62,27 @@ NAGOYAMESHI/
 mvn clean spring-boot:run
 ```
 
+### プロキシ環境での Maven 実行
+
+社内ネットワークなどで HTTP/HTTPS プロキシを使用している場合、Maven が依存関係を取得できず `Network is unreachable` エラーになることがあります。その際は `~/.m2/settings.xml` に以下を追加してください。
+
+```xml
+<settings>
+  <proxies>
+    <proxy>
+      <id>proxy</id>
+      <active>true</active>
+      <protocol>http</protocol>
+      <host>proxy</host>
+      <port>8080</port>
+      <nonProxyHosts>localhost|127.0.0.1|::1</nonProxyHosts>
+    </proxy>
+  </proxies>
+</settings>
+```
+
+これにより Maven がプロキシ経由で依存ライブラリを取得できるようになります。
+
 ---
 
 ## デプロイ予定
