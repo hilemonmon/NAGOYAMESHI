@@ -7,7 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+// Spring Framework が提供する MockitoBean を使用
+// MockBean は 3.4.0 以降非推奨となったため置き換える
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -19,7 +21,8 @@ class AuthControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    // UserService をモック化してテスト用のコンテキストに登録する
+    @MockitoBean
     private UserService userService;
 
     @Test
