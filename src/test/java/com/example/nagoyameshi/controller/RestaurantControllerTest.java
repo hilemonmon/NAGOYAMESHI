@@ -31,13 +31,20 @@ class RestaurantControllerTest {
 
     @WithMockUser(username = "testuser", roles = {"USER"})
     @Test
-    @DisplayName("GET /restaurants returns restaurants")
-    void testGetRestaurants() throws Exception {
+    @DisplayName("GET /restaurants は飲食店一覧を返す")
+    void 認証済みの場合は飲食店一覧を取得できる() throws Exception {
         Restaurant r = Restaurant.builder().id(1L).name("Nagoya Ramen").description("desc").build();
         when(restaurantService.getRestaurants("Ramen")).thenReturn(List.of(r));
 
         mockMvc.perform(get("/restaurants").param("name", "Ramen"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("Nagoya Ramen"));
+    }
+
+    @Test
+    @DisplayName("未認証の場合は401を返す")
+    void 未認証の場合は401を返す() throws Exception {
+        mockMvc.perform(get("/restaurants"))
+                .andExpect(status().isUnauthorized());
     }
 }

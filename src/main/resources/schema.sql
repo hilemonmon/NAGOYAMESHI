@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS users (
     role_id INT NOT NULL,
     enabled BOOLEAN NOT NULL DEFAULT TRUE,
     stripe_customer_id VARCHAR(255),
-    created_at DATETIME NOT NULL,
-    updated_at DATETIME NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_users_role FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
@@ -50,16 +50,16 @@ CREATE TABLE IF NOT EXISTS restaurants (
     opening_time TIME,
     closing_time TIME,
     seating_capacity INT,
-    created_at DATETIME NOT NULL,
-    updated_at DATETIME NOT NULL
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS category_restaurant (
     id INT AUTO_INCREMENT PRIMARY KEY,
     restaurant_id INT NOT NULL,
     category_id INT NOT NULL,
-    created_at DATETIME NOT NULL,
-    updated_at DATETIME NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_cat_res_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurants(id),
     CONSTRAINT fk_cat_res_category FOREIGN KEY (category_id) REFERENCES categories(id)
 );
@@ -70,8 +70,8 @@ CREATE TABLE IF NOT EXISTS reviews (
     score INT,
     restaurant_id INT NOT NULL,
     user_id INT NOT NULL,
-    created_at DATETIME NOT NULL,
-    updated_at DATETIME NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_reviews_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurants(id),
     CONSTRAINT fk_reviews_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -82,8 +82,8 @@ CREATE TABLE IF NOT EXISTS reservations (
     number_of_people INT NOT NULL,
     restaurant_id INT NOT NULL,
     user_id INT NOT NULL,
-    created_at DATETIME NOT NULL,
-    updated_at DATETIME NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_reservations_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurants(id),
     CONSTRAINT fk_reservations_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -92,8 +92,8 @@ CREATE TABLE IF NOT EXISTS favorites (
     id INT AUTO_INCREMENT PRIMARY KEY,
     restaurant_id INT NOT NULL,
     user_id INT NOT NULL,
-    created_at DATETIME NOT NULL,
-    updated_at DATETIME NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_favorites_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurants(id),
     CONSTRAINT fk_favorites_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS companies (
     capital VARCHAR(255),
     business VARCHAR(255),
     number_of_employees VARCHAR(255),
-    created_at DATETIME NOT NULL,
-    updated_at DATETIME NOT NULL
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
