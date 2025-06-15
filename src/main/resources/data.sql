@@ -1,13 +1,13 @@
 -- Sample data for NAGOYAMESHI
 
 /* rolesテーブル */
-INSERT IGNORE INTO roles (id, name) VALUES
+INSERT INTO roles (id, name) VALUES
 (1, 'ROLE_FREE_MEMBER'),
 (2, 'ROLE_PAID_MEMBER'),
 (3, 'ROLE_ADMIN');
 
 /* usersテーブル */
-INSERT IGNORE INTO users (id, name, furigana, postal_code, address, phone_number, birthday, occupation, email, password, role_id, enabled) VALUES
+INSERT INTO users (id, name, furigana, postal_code, address, phone_number, birthday, occupation, email, password, role_id, enabled) VALUES
 (1, '侍 太郎', 'サムライ タロウ', '1010022', '東京都千代田区神田練塀町300番地', '09012345678', '1990-01-01', 'エンジニア', 'taro.samurai@example.com', '$2a$10$2JNjTwZBwo7fprL2X4sv.OEKqxnVtsVQvuXDkI8xVGix.U3W5B7CO', 1, true),
 (2, '侍 次郎', 'サムライ ジロウ', '1010022', '東京都千代田区神田練塀町300番地', '09012345678', '1990-02-02', 'デザイナー', 'jiro.samurai@example.com', '$2a$10$2JNjTwZBwo7fprL2X4sv.OEKqxnVtsVQvuXDkI8xVGix.U3W5B7CO', 2, true),
 (3, '侍 花子', 'サムライ ハナコ', '1010022', '東京都千代田区神田練塀町300番地', '09012345678', '1990-03-03', 'マーケティング', 'hanako.samurai@example.com', '$2a$10$2JNjTwZBwo7fprL2X4sv.OEKqxnVtsVQvuXDkI8xVGix.U3W5B7CO', 3, true),

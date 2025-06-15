@@ -18,8 +18,8 @@ class RestaurantRepositoryTest {
     private RestaurantRepository restaurantRepository;
 
     @Test
-    @DisplayName("findByNameContaining returns matching restaurants")
-    void testFindByNameContaining() {
+    @DisplayName("findByNameContaining は名前で部分一致検索できる")
+    void findByNameContaining_は名前で部分一致検索できる() {
         Restaurant r1 = Restaurant.builder().name("Nagoya Ramen").description("desc").build();
         Restaurant r2 = Restaurant.builder().name("Tokyo Ramen").description("desc").build();
         restaurantRepository.saveAll(List.of(r1, r2));

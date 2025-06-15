@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-public class IndexController {
+public class HomeController {
 
     /** ユーザー関連の処理を行うサービス */
     private final UserService userService;
