@@ -42,6 +42,7 @@ public class WebSecurityConfig {
                                 "/js/**",
                                 "/storage/**",
                                 "/",
+                                "/signup/",
                                 "/signup/**",
                                 "/register",
                                 "/verify"
