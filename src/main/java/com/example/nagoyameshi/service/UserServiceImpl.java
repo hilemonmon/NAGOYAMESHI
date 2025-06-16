@@ -2,6 +2,7 @@ package com.example.nagoyameshi.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.Optional;
 
 // 認証用の UserDetailsService 実装は security パッケージへ分離したため
@@ -54,11 +55,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createVerificationToken(User user, String token) {
+        // 現在時刻を Timestamp で取得
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
         VerificationToken vToken = VerificationToken.builder()
                 .user(user)
                 .token(token)
-                .createdAt(java.time.LocalDateTime.now())
-                .updatedAt(java.time.LocalDateTime.now())
+                .createdAt(now)
+                .updatedAt(now)
                 .build();
         verificationTokenRepository.save(vToken);
     }

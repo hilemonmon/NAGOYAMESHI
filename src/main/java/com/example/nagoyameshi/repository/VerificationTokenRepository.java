@@ -6,7 +6,12 @@ import java.util.Optional;
 
 import com.example.nagoyameshi.entity.VerificationToken;
 
-public interface VerificationTokenRepository extends JpaRepository<VerificationToken, Long> {
-    // トークン文字列から認証情報を取得する
+public interface VerificationTokenRepository extends JpaRepository<VerificationToken, Integer> {
+    /**
+     * 指定したトークンに一致する VerificationToken を取得する。
+     *
+     * @param token 検索するトークン
+     * @return 一致する VerificationToken。存在しない場合は空
+     */
     Optional<VerificationToken> findByToken(String token);
 }
