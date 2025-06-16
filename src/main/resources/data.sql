@@ -1,13 +1,13 @@
 -- Sample data for NAGOYAMESHI
 
 /* rolesテーブル */
-INSERT INTO roles (id, name) VALUES
+INSERT IGNORE INTO roles (id, name) VALUES
 (1, 'ROLE_FREE_MEMBER'),
 (2, 'ROLE_PAID_MEMBER'),
 (3, 'ROLE_ADMIN');
 
 /* usersテーブル */
-INSERT INTO users (id, name, furigana, postal_code, address, phone_number, birthday, occupation, email, password, role_id, enabled) VALUES
+INSERT IGNORE INTO users (id, name, furigana, postal_code, address, phone_number, birthday, occupation, email, password, role_id, enabled) VALUES
 (1, '侍 太郎', 'サムライ タロウ', '1010022', '東京都千代田区神田練塀町300番地', '09012345678', '1990-01-01', 'エンジニア', 'taro.samurai@example.com', '$2a$10$2JNjTwZBwo7fprL2X4sv.OEKqxnVtsVQvuXDkI8xVGix.U3W5B7CO', 1, true),
 (2, '侍 次郎', 'サムライ ジロウ', '1010022', '東京都千代田区神田練塀町300番地', '09012345678', '1990-02-02', 'デザイナー', 'jiro.samurai@example.com', '$2a$10$2JNjTwZBwo7fprL2X4sv.OEKqxnVtsVQvuXDkI8xVGix.U3W5B7CO', 2, true),
 (3, '侍 花子', 'サムライ ハナコ', '1010022', '東京都千代田区神田練塀町300番地', '09012345678', '1990-03-03', 'マーケティング', 'hanako.samurai@example.com', '$2a$10$2JNjTwZBwo7fprL2X4sv.OEKqxnVtsVQvuXDkI8xVGix.U3W5B7CO', 3, true),
@@ -109,15 +109,15 @@ INSERT INTO users (id, name, furigana, postal_code, address, phone_number, birth
 (99, '福田 順二', 'フクダ ジュンジ', '2200042', '神奈川県横浜市西区X-XX-XX', '09012345678', '1976-05-26', '漫画家', 'junji.fukuda@example.com', 'password', 1, false),
 (100, '石田 花音', 'イシダ カノン', '6500044', '兵庫県神戸市中央区X-XX-XX', '09012345678', '1977-06-20', 'アニメーター', 'kanon.ishida@example.com', 'password', 1, false);
 
-INSERT INTO verification_tokens (user_id, created_at, updated_at) VALUES
+INSERT IGNORE INTO verification_tokens (user_id, created_at, updated_at) VALUES
 (1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO categories (name) VALUES
+INSERT IGNORE INTO categories (name) VALUES
 ('Ramen'),
 ('Cafe'),
 ('Local');
 
-INSERT INTO restaurants (name, image, description, lowest_price, highest_price, postal_code, address, opening_time, closing_time, seating_capacity, created_at, updated_at) VALUES
+INSERT IGNORE INTO restaurants (name, image, description, lowest_price, highest_price, postal_code, address, opening_time, closing_time, seating_capacity, created_at, updated_at) VALUES
 ('Yabaton', 'yabaton.jpg', 'Famous miso katsu restaurant', 800, 2000, '460-0011', 'Nagoya, Sakae', '11:00:00', '22:00:00', 50, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('Komeda Coffee', 'komeda.jpg', 'Popular coffee shop', 400, 1000, '460-0012', 'Nagoya, Fushimi', '07:00:00', '23:00:00', 80, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('Restaurant3', 'restaurant3.jpg', 'Description for restaurant 3', 530, 1060, '460-0203', 'Nagoya Address 3', '09:00:00', '21:00:00', 33, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -143,15 +143,15 @@ INSERT INTO restaurants (name, image, description, lowest_price, highest_price, 
 ('Restaurant23', 'restaurant23.jpg', 'Description for restaurant 23', 730, 1460, '460-0223', 'Nagoya Address 23', '09:00:00', '21:00:00', 53, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('Restaurant24', 'restaurant24.jpg', 'Description for restaurant 24', 740, 1480, '460-0224', 'Nagoya Address 24', '09:00:00', '21:00:00', 54, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO category_restaurant (restaurant_id, category_id, created_at, updated_at) VALUES
+INSERT IGNORE INTO category_restaurant (restaurant_id, category_id, created_at, updated_at) VALUES
 (1, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO reviews (content, score, restaurant_id, user_id, created_at, updated_at) VALUES
+INSERT IGNORE INTO reviews (content, score, restaurant_id, user_id, created_at, updated_at) VALUES
 ('Great miso katsu!', 5, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('Loved the morning set.', 4, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO reservations (reserved_datetime, number_of_people, restaurant_id, user_id, created_at, updated_at) VALUES
+INSERT IGNORE INTO reservations (reserved_datetime, number_of_people, restaurant_id, user_id, created_at, updated_at) VALUES
 ('2024-08-01 18:00:00', 2, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('2024-08-02 18:00:00', 2, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('2024-08-03 18:00:00', 2, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -189,8 +189,8 @@ INSERT INTO reservations (reserved_datetime, number_of_people, restaurant_id, us
 ('2024-08-11 18:00:00', 4, 11, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('2024-08-12 18:00:00', 4, 12, 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO favorites (restaurant_id, user_id, created_at, updated_at) VALUES
+INSERT IGNORE INTO favorites (restaurant_id, user_id, created_at, updated_at) VALUES
 (2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO companies (name, postal_code, address, representative, capital, business, number_of_employees, created_at, updated_at) VALUES
+INSERT IGNORE INTO companies (name, postal_code, address, representative, capital, business, number_of_employees, created_at, updated_at) VALUES
 ('Nagoyameshi Inc.', '460-0001', 'Nagoya, Japan', 'Taro Manager', '10M JPY', 'Web Service', '10', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

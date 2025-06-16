@@ -14,8 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import com.example.nagoyameshi.service.UserService;
 
-import com.example.nagoyameshi.controller.HomeController;
-
 @WebMvcTest(HomeController.class)
 @AutoConfigureMockMvc(addFilters = false)
 class HomeControllerTest {
