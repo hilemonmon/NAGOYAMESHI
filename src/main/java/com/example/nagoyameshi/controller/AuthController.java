@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import com.example.nagoyameshi.dto.RegisterRequest;
 import com.example.nagoyameshi.event.SignupEventPublisher;
 import com.example.nagoyameshi.service.UserService;
+import com.example.nagoyameshi.service.VerificationTokenService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
+    private final VerificationTokenService verificationTokenService;
     private final SignupEventPublisher signupEventPublisher;
 
     @PostMapping("/register")
@@ -37,7 +39,16 @@ public class AuthController {
 
     @GetMapping("/verify")
     public ResponseEntity<Void> verify(@RequestParam("token") String token) {
+        // まずトークンの存在を確認
+        var vToken = verificationTokenService.findVerificationTokenByToken(token);
+        if (vToken.isEmpty()) {
+            // トークンが存在しない場合は 400 を返却
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        // 実際の認証処理は UserService に委譲
         boolean result = userService.verify(token);
-        return result ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return result ? ResponseEntity.ok().build()
+                : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 }

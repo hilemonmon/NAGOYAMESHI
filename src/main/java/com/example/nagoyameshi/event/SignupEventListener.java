@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.example.nagoyameshi.service.UserService;
+import com.example.nagoyameshi.service.VerificationTokenService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SignupEventListener {
     private final JavaMailSender mailSender;
-    private final UserService userService;
+    private final VerificationTokenService verificationTokenService;
     // application.properties の spring.mail.from プロパティを注入
     @Value("${spring.mail.from}")
     private String fromAddress;
@@ -35,7 +35,7 @@ public class SignupEventListener {
         String token = UUID.randomUUID().toString();
 
         // トークン情報を保存
-        userService.createVerificationToken(event.getUser(), token);
+        verificationTokenService.createVerificationToken(event.getUser(), token);
 
         // 認証用URLを作成
         // ベースURL + "/verify?token=..." という形式になる

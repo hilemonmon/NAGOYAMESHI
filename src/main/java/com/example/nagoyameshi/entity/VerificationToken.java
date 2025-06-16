@@ -1,6 +1,6 @@
 package com.example.nagoyameshi.entity;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,17 +25,22 @@ import lombok.NoArgsConstructor;
 public class VerificationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    // 主キー。IDENTITY方式で自動採番される
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id") // users テーブルの主キーを参照
     private User user;
 
     // 認証用に発行したトークンを保持
     @Column(nullable = false, unique = true)
     private String token;
 
-    private LocalDateTime createdAt;
+    // レコード作成日時
+    @Column(name = "created_at")
+    private Timestamp createdAt;
 
-    private LocalDateTime updatedAt;
+    // レコード更新日時
+    @Column(name = "updated_at")
+    private Timestamp updatedAt;
 }
