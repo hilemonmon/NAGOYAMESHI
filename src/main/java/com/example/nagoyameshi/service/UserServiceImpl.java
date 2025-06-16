@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public void createUser(SignupForm form) {
+    public User createUser(SignupForm form) {
         Role role = roleRepository.findByName("ROLE_FREE_MEMBER").orElseThrow();
 
         User user = User.builder()
@@ -101,11 +101,22 @@ public class UserServiceImpl implements UserService {
                 .email(form.getEmail())
                 .password(passwordEncoder.encode(form.getPassword()))
                 .role(role)
-                .enabled(true)
+                // メール認証前のため、アカウントを無効状態で作成
+                .enabled(false)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
 
+        // ユーザーを保存して生成されたエンティティを返す
+        return userRepository.save(user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void enableUser(User user) {
+        user.setEnabled(true);
         userRepository.save(user);
     }
 
