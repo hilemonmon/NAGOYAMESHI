@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import com.example.nagoyameshi.service.UserService;
+import com.example.nagoyameshi.event.SignupEventPublisher;
+import com.example.nagoyameshi.service.VerificationTokenService;
 
 @WebMvcTest(HomeController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -21,6 +23,14 @@ class HomeControllerTest {
     // UserService をモック化してテスト用のコンテキストに登録する
     @MockitoBean
     private UserService userService;
+
+    // SignupEventPublisher をモック化
+    @MockitoBean
+    private SignupEventPublisher signupEventPublisher;
+
+    // VerificationTokenService もモック化
+    @MockitoBean
+    private VerificationTokenService verificationTokenService;
 
     @Autowired
     private MockMvc mockMvc;

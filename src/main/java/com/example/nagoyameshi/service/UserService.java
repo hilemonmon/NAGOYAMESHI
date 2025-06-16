@@ -21,7 +21,21 @@ public interface UserService {
      *
      * @param form 入力された会員情報
      */
-    void createUser(SignupForm form);
+    /**
+     * 会員登録フォームからユーザーを生成して保存する。
+     * 保存時点ではメール認証前のため enabled は false とする。
+     *
+     * @param form 入力された会員情報
+     * @return 保存したユーザーエンティティ
+     */
+    User createUser(SignupForm form);
+
+    /**
+     * 指定したユーザーを有効化する。
+     *
+     * @param user 有効化したいユーザー
+     */
+    void enableUser(User user);
 
     /**
      * メールアドレスがすでに登録済みか判定する。
