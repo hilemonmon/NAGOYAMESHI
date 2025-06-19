@@ -38,8 +38,8 @@ public class AdminUserController {
                         @RequestParam(name = "page", defaultValue = "0") int page,
                         Model model) {
         Pageable pageable = PageRequest.of(page, 10);
-        Page<User> users = adminUserService.searchUsers(keyword, pageable);
-        model.addAttribute("users", users);
+        Page<User> userPage = adminUserService.searchUsers(keyword, pageable);
+        model.addAttribute("userPage", userPage);
         model.addAttribute("keyword", keyword);
         return "admin/users/index";
     }

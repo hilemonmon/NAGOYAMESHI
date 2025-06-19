@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.example.nagoyameshi.entity.Role;
 import com.example.nagoyameshi.entity.User;
 import com.example.nagoyameshi.service.AdminUserService;
 
@@ -50,7 +51,12 @@ class AdminUserControllerTest {
     @Test
     @DisplayName("GET /admin/users/{id} は詳細ページを返す")
     void 詳細ページが表示される() throws Exception {
-        when(adminUserService.getUserById(1L)).thenReturn(User.builder().id(1L).build());
+        // 役割が null だとテンプレートで評価エラーになるため、ダミーの役割をセット
+        when(adminUserService.getUserById(1L)).thenReturn(
+                User.builder()
+                        .id(1L)
+                        .role(Role.builder().name("ROLE_FREE_MEMBER").build())
+                        .build());
 
         mockMvc.perform(get("/admin/users/1"))
                 .andExpect(status().isOk())
