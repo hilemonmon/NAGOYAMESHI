@@ -67,17 +67,6 @@ public class UserServiceImpl implements UserService {
         verificationTokenRepository.save(vToken);
     }
 
-    @Override
-    public boolean verify(String token) {
-        Optional<VerificationToken> opt = verificationTokenRepository.findByToken(token);
-        if (opt.isEmpty()) {
-            return false;
-        }
-        User user = opt.get().getUser();
-        user.setEnabled(true);
-        userRepository.save(user);
-        return true;
-    }
 
     /**
      * {@inheritDoc}

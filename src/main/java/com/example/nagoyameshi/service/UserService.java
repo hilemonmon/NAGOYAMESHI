@@ -6,7 +6,6 @@ import com.example.nagoyameshi.form.SignupForm;
 
 public interface UserService {
     User register(RegisterRequest request);
-    boolean verify(String token);
 
     /**
      * 認証トークンを生成して保存する。

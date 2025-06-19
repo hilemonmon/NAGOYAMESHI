@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.nagoyameshi.service.UserService;
 import com.example.nagoyameshi.event.SignupEventPublisher;
-import com.example.nagoyameshi.service.VerificationTokenService;
 
 @WebMvcTest(AuthController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -33,9 +32,6 @@ class AuthControllerTest {
     @MockitoBean
     private SignupEventPublisher signupEventPublisher;
 
-    // VerificationTokenService もモックとして登録
-    @MockitoBean
-    private VerificationTokenService verificationTokenService;
 
     @Test
     @DisplayName("POST /register はステータス200を返す")
