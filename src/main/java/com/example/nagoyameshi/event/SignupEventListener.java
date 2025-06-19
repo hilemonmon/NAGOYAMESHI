@@ -38,8 +38,8 @@ public class SignupEventListener {
         verificationTokenService.createVerificationToken(event.getUser(), token);
 
         // 認証用URLを作成
-        // ベースURL + "/verify?token=..." という形式になる
-        String verifyUrl = event.getRequestUrl() + "/verify?token=" + token;
+        // ベースURL + "/signup/verify?token=..." という形式になる
+        String verifyUrl = event.getRequestUrl() + "/signup/verify?token=" + token;
 
         // メール内容を組み立てる
         SimpleMailMessage message = new SimpleMailMessage();

@@ -44,8 +44,7 @@ public class WebSecurityConfig {
                                 "/",
                                 "/signup",
                                 "/signup/**",
-                                "/register",
-                                "/verify"
+                                "/register"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
