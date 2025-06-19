@@ -46,6 +46,8 @@ public class WebSecurityConfig {
                                 "/signup/**",
                                 "/register"
                         ).permitAll()
+                        // 管理画面のURLは管理者ロールのみ許可
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 // ログイン時に利用する UserDetailsService を指定
