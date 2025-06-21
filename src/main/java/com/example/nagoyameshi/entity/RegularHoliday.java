@@ -31,6 +31,7 @@ public class RegularHoliday {
     private Integer id;
 
     /** 曜日名や"不定休"などの表示文字列 */
+    @jakarta.persistence.Column(name = "\"day\"")
     private String day;
 
     /** 曜日の並び替え順。NULL許容 */

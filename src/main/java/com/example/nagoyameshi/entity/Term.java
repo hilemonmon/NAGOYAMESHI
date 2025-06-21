@@ -1,6 +1,5 @@
 package com.example.nagoyameshi.entity;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,31 +12,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.example.nagoyameshi.entity.base.BaseTimeEntity;
 
+/**
+ * 利用規約を表すエンティティクラス。
+ * データベースの terms テーブルとマッピングされる。
+ */
 @Entity
-@Table(name = "companies")
+@Table(name = "terms")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Company extends BaseTimeEntity {
+public class Term extends BaseTimeEntity {
+    /** ID */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
-    private String postalCode;
-
-    private String address;
-
-    private String representative;
-
-    /** 創業年月日 */
-    private String establishmentDate;
-
-    private String capital;
-
-    private String business;
-
-    private String numberOfEmployees;
+    /** 利用規約本文（HTML形式など） */
+    private String content;
 }
