@@ -113,14 +113,14 @@ CREATE TABLE IF NOT EXISTS companies (
 );
 
 -- 定休日マスタテーブル
-CREATE TABLE regular_holidays (
+CREATE TABLE IF NOT EXISTS regular_holidays (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     day VARCHAR(50) NOT NULL,
     day_index INT
 );
 
 -- 店舗と定休日の中間テーブル
-CREATE TABLE regular_holiday_restaurant (
+CREATE TABLE IF NOT EXISTS regular_holiday_restaurant (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     restaurant_id INT NOT NULL,
     regular_holiday_id INT NOT NULL,
