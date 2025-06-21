@@ -73,6 +73,31 @@ public class AdminRestaurantServiceImpl implements AdminRestaurantService {
 
     /** {@inheritDoc} */
     @Override
+    public Restaurant createRestaurant(RestaurantRegisterForm form) {
+        // create() と同一の処理を行う
+        return create(form);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isValidPrices(Integer lowestPrice, Integer highestPrice) {
+        if (lowestPrice == null || highestPrice == null) {
+            return false;
+        }
+        return highestPrice >= lowestPrice;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isValidBusinessHours(java.time.LocalTime opening, java.time.LocalTime closing) {
+        if (opening == null || closing == null) {
+            return false;
+        }
+        return closing.isAfter(opening);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public Restaurant update(Long id, RestaurantEditForm form) {
         Restaurant restaurant = getRestaurant(id);
 

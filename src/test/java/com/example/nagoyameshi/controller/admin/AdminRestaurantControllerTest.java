@@ -163,7 +163,9 @@ class AdminRestaurantControllerTest {
     @Test
     @DisplayName("管理者は店舗登録後に一覧ページへリダイレクトされる")
     void 管理者は店舗登録後に一覧ページへリダイレクトされる() throws Exception {
-        when(adminRestaurantService.create(any(RestaurantRegisterForm.class))).thenReturn(Restaurant.builder().id(1L).build());
+        when(adminRestaurantService.createRestaurant(any(RestaurantRegisterForm.class))).thenReturn(Restaurant.builder().id(1L).build());
+        when(adminRestaurantService.isValidPrices(any(), any())).thenReturn(true);
+        when(adminRestaurantService.isValidBusinessHours(any(), any())).thenReturn(true);
 
         mockMvc.perform(multipart("/admin/restaurants/create")
                         .with(user("admin").roles("ADMIN"))
