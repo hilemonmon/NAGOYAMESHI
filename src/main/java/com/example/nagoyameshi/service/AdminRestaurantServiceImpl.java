@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.nagoyameshi.entity.Restaurant;
+import com.example.nagoyameshi.service.CategoryRestaurantService;
 import com.example.nagoyameshi.form.RestaurantEditForm;
 import com.example.nagoyameshi.form.RestaurantRegisterForm;
 import com.example.nagoyameshi.repository.RestaurantRepository;
@@ -32,6 +33,7 @@ public class AdminRestaurantServiceImpl implements AdminRestaurantService {
     private static final Path STORAGE_DIR = Paths.get("src/main/resources/static/storage");
 
     private final RestaurantRepository restaurantRepository;
+    private final CategoryRestaurantService categoryRestaurantService;
 
     /** {@inheritDoc} */
     @Override
@@ -68,7 +70,12 @@ public class AdminRestaurantServiceImpl implements AdminRestaurantService {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
-        return restaurantRepository.save(restaurant);
+        Restaurant saved = restaurantRepository.save(restaurant);
+        // カテゴリが選択されていれば中間テーブルを作成
+        if (form.getCategoryIds() != null) {
+            categoryRestaurantService.createCategoriesRestaurants(form.getCategoryIds(), saved);
+        }
+        return saved;
     }
 
     /** {@inheritDoc} */
@@ -117,7 +124,10 @@ public class AdminRestaurantServiceImpl implements AdminRestaurantService {
         restaurant.setSeatingCapacity(form.getSeatingCapacity());
         restaurant.setUpdatedAt(LocalDateTime.now());
 
-        return restaurantRepository.save(restaurant);
+        Restaurant saved = restaurantRepository.save(restaurant);
+        // 既存のカテゴリ情報をフォーム内容と同期
+        categoryRestaurantService.syncCategoriesRestaurants(form.getCategoryIds(), saved);
+        return saved;
     }
 
     /** {@inheritDoc} */

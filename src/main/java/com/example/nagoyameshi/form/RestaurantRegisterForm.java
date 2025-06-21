@@ -1,6 +1,7 @@
 package com.example.nagoyameshi.form;
 
 import java.time.LocalTime;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,4 +58,7 @@ public class RestaurantRegisterForm {
     /** 座席数 */
     @NotNull(message = "座席数を入力してください。")
     private Integer seatingCapacity;
+
+    /** 選択されたカテゴリIDのリスト */
+    private List<Integer> categoryIds;
 }
