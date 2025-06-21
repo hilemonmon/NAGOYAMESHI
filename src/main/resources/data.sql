@@ -112,10 +112,42 @@ INSERT IGNORE INTO users (id, name, furigana, postal_code, address, phone_number
 INSERT IGNORE INTO verification_tokens (user_id, created_at, updated_at) VALUES
 (1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT IGNORE INTO categories (name) VALUES
-('Ramen'),
-('Cafe'),
-('Local');
+/* categoriesテーブル */
+INSERT IGNORE INTO categories (id, name) VALUES
+(1, '居酒屋'),
+(2, '焼肉'),
+(3, '寿司'),
+(4, 'ラーメン'),
+(5, '定食'),
+(6, 'カレー'),
+(7, '喫茶店'),
+(8, '中華料理'),
+(9, 'イタリア料理'),
+(10, 'フランス料理'),
+(11, 'スペイン料理'),
+(12, '韓国料理'),
+(13, 'タイ料理'),
+(14, '海鮮料理'),
+(15, 'ステーキ'),
+(16, 'ハンバーグ'),
+(17, 'ハンバーガー'),
+(18, 'そば'),
+(19, 'うどん'),
+(20, 'お好み焼き'),
+(21, 'たこ焼き'),
+(22, '鍋料理'),
+(23, 'バー'),
+(24, 'パン'),
+(25, 'スイーツ'),
+(26, '和食'),
+(27, 'おでん'),
+(28, '焼き鳥'),
+(29, 'すき焼き'),
+(30, 'しゃぶしゃぶ'),
+(31, '天ぷら'),
+(32, '揚げ物'),
+(33, '丼物'),
+(34, '鉄板焼き');
 
 /* restaurantsテーブル */
 INSERT IGNORE INTO restaurants (id, name, image, description, lowest_price, highest_price, postal_code, address, opening_time, closing_time, seating_capacity) VALUES
