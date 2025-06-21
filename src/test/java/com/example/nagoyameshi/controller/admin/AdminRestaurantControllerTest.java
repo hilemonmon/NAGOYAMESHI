@@ -28,6 +28,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.http.MediaType;
+import com.example.nagoyameshi.service.CategoryService;
+import com.example.nagoyameshi.service.CategoryRestaurantService;
 
 import com.example.nagoyameshi.entity.Restaurant;
 import com.example.nagoyameshi.form.RestaurantEditForm;
@@ -52,6 +54,14 @@ class AdminRestaurantControllerTest {
     /** サービス層をモック化して登録 */
     @MockitoBean
     private AdminRestaurantService adminRestaurantService;
+
+    /** カテゴリ情報を扱うサービスをモック化して登録 */
+    @MockitoBean
+    private CategoryService categoryService;
+
+    /** 中間テーブル操作サービスをモック化して登録 */
+    @MockitoBean
+    private CategoryRestaurantService categoryRestaurantService;
 
     /** 認証処理に必要なサービスもモック化して登録 */
     @MockitoBean
@@ -102,7 +112,11 @@ class AdminRestaurantControllerTest {
     @Test
     @DisplayName("一般ユーザーは詳細ページにアクセスすると403エラー")
     void 一般ユーザーは詳細ページにアクセスできない() throws Exception {
-        when(adminRestaurantService.getRestaurant(1L)).thenReturn(Restaurant.builder().id(1L).build());
+        when(adminRestaurantService.getRestaurant(1L))
+                .thenReturn(Restaurant.builder()
+                        .id(1L)
+                        .categoriesRestaurants(List.of())
+                        .build());
 
         mockMvc.perform(get("/admin/restaurants/1").with(user("user").roles("FREE_MEMBER")))
                 .andExpect(status().isForbidden());
@@ -111,7 +125,11 @@ class AdminRestaurantControllerTest {
     @Test
     @DisplayName("管理者は詳細ページを閲覧できる")
     void 管理者は詳細ページを閲覧できる() throws Exception {
-        when(adminRestaurantService.getRestaurant(1L)).thenReturn(Restaurant.builder().id(1L).build());
+        when(adminRestaurantService.getRestaurant(1L))
+                .thenReturn(Restaurant.builder()
+                        .id(1L)
+                        .categoriesRestaurants(List.of())
+                        .build());
 
         mockMvc.perform(get("/admin/restaurants/1").with(user("admin").roles("ADMIN")))
                 .andExpect(status().isOk())
