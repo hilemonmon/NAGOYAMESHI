@@ -30,6 +30,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.http.MediaType;
 import com.example.nagoyameshi.service.CategoryService;
 import com.example.nagoyameshi.service.CategoryRestaurantService;
+import com.example.nagoyameshi.service.RegularHolidayService;
+import com.example.nagoyameshi.service.RegularHolidayRestaurantService;
 
 import com.example.nagoyameshi.entity.Restaurant;
 import com.example.nagoyameshi.form.RestaurantEditForm;
@@ -62,6 +64,14 @@ class AdminRestaurantControllerTest {
     /** 中間テーブル操作サービスをモック化して登録 */
     @MockitoBean
     private CategoryRestaurantService categoryRestaurantService;
+
+    /** 定休日マスタを扱うサービスをモック化して登録 */
+    @MockitoBean
+    private RegularHolidayService regularHolidayService;
+
+    /** 店舗と定休日の関連サービスをモック化して登録 */
+    @MockitoBean
+    private RegularHolidayRestaurantService regularHolidayRestaurantService;
 
     /** 認証処理に必要なサービスもモック化して登録 */
     @MockitoBean
@@ -116,6 +126,7 @@ class AdminRestaurantControllerTest {
                 .thenReturn(Restaurant.builder()
                         .id(1L)
                         .categoriesRestaurants(List.of())
+                        .regularHolidaysRestaurants(List.of())
                         .build());
 
         mockMvc.perform(get("/admin/restaurants/1").with(user("user").roles("FREE_MEMBER")))
@@ -129,6 +140,7 @@ class AdminRestaurantControllerTest {
                 .thenReturn(Restaurant.builder()
                         .id(1L)
                         .categoriesRestaurants(List.of())
+                        .regularHolidaysRestaurants(List.of())
                         .build());
 
         mockMvc.perform(get("/admin/restaurants/1").with(user("admin").roles("ADMIN")))
@@ -214,7 +226,12 @@ class AdminRestaurantControllerTest {
     @Test
     @DisplayName("一般ユーザーは編集ページにアクセスすると403エラー")
     void 一般ユーザーは編集ページにアクセスできない() throws Exception {
-        when(adminRestaurantService.getRestaurant(1L)).thenReturn(Restaurant.builder().id(1L).build());
+        when(adminRestaurantService.getRestaurant(1L))
+                .thenReturn(Restaurant.builder()
+                        .id(1L)
+                        .categoriesRestaurants(List.of())
+                        .regularHolidaysRestaurants(List.of())
+                        .build());
 
         mockMvc.perform(get("/admin/restaurants/1/edit").with(user("user").roles("FREE_MEMBER")))
                 .andExpect(status().isForbidden());
@@ -233,6 +250,8 @@ class AdminRestaurantControllerTest {
                 .openingTime(LocalTime.of(10, 0))
                 .closingTime(LocalTime.of(20, 0))
                 .seatingCapacity(10)
+                .categoriesRestaurants(List.of())
+                .regularHolidaysRestaurants(List.of())
                 .build());
 
         mockMvc.perform(get("/admin/restaurants/1/edit").with(user("admin").roles("ADMIN")))
