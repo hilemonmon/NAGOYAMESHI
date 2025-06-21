@@ -55,4 +55,5 @@ public class Restaurant extends BaseTimeEntity {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id ASC")
     private List<CategoryRestaurant> categoriesRestaurants;
+
 }

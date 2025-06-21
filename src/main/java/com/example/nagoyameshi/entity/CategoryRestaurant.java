@@ -35,5 +35,4 @@ public class CategoryRestaurant extends BaseTimestampEntity {
     @ManyToOne
     @JoinColumn(name = "category_id") // categories テーブルの主キーを参照
     private Category category;
-
 }
