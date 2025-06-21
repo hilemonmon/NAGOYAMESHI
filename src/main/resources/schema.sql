@@ -112,3 +112,22 @@ CREATE TABLE IF NOT EXISTS companies (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 定休日マスタテーブル
+CREATE TABLE regular_holidays (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    day VARCHAR(50) NOT NULL,
+    day_index INT
+);
+
+-- 店舗と定休日の中間テーブル
+CREATE TABLE regular_holiday_restaurant (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    restaurant_id INT NOT NULL,
+    regular_holiday_id INT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_restaurant_regularholiday (restaurant_id, regular_holiday_id),
+    FOREIGN KEY (restaurant_id) REFERENCES restaurants(id),
+    FOREIGN KEY (regular_holiday_id) REFERENCES regular_holidays(id)
+);
+
