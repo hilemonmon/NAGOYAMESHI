@@ -104,7 +104,8 @@ public class AdminRestaurantController {
             model.addAttribute("restaurant", restaurant);
             return "admin/restaurants/show";
         } catch (IllegalArgumentException e) {
-            // 存在しない場合は一覧へリダイレクト
+            // 店舗が存在しない場合は一覧へリダイレクトしメッセージを表示
+            redirectAttributes.addFlashAttribute("errorMessage", "店舗が存在しません。");
             return "redirect:/admin/restaurants";
         }
     }
