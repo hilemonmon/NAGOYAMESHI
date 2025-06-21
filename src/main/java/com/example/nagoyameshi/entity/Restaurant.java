@@ -7,6 +7,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import com.example.nagoyameshi.entity.CategoryRestaurant;
+import com.example.nagoyameshi.entity.RegularHolidayRestaurant;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -55,5 +56,10 @@ public class Restaurant extends BaseTimeEntity {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id ASC")
     private List<CategoryRestaurant> categoriesRestaurants;
+
+    // 店舗に紐づく定休日情報。追加順で取得できるようid昇順で並び替える
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
+    private List<RegularHolidayRestaurant> regularHolidaysRestaurants;
 
 }

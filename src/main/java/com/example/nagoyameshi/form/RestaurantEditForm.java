@@ -63,4 +63,7 @@ public class RestaurantEditForm {
 
     /** 選択されたカテゴリIDのリスト */
     private List<Integer> categoryIds;
+
+    /** 選択された定休日IDのリスト */
+    private List<Integer> regularHolidayIds;
 }

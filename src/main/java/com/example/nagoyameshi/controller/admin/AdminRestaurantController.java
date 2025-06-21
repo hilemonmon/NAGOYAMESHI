@@ -20,6 +20,8 @@ import com.example.nagoyameshi.form.RestaurantRegisterForm;
 import com.example.nagoyameshi.service.AdminRestaurantService;
 import com.example.nagoyameshi.service.CategoryService;
 import com.example.nagoyameshi.service.CategoryRestaurantService;
+import com.example.nagoyameshi.service.RegularHolidayRestaurantService;
+import com.example.nagoyameshi.service.RegularHolidayService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +39,10 @@ public class AdminRestaurantController {
     private final CategoryService categoryService;
     /** 中間テーブルを扱うサービス */
     private final CategoryRestaurantService categoryRestaurantService;
+    /** 定休日マスタを扱うサービス */
+    private final RegularHolidayService regularHolidayService;
+    /** 店舗と定休日の関連を扱うサービス */
+    private final RegularHolidayRestaurantService regularHolidayRestaurantService;
 
     /**
      * 店舗一覧ページを表示する。
@@ -70,6 +76,7 @@ public class AdminRestaurantController {
     public String register(Model model) {
         model.addAttribute("restaurantRegisterForm", new RestaurantRegisterForm());
         model.addAttribute("categories", categoryService.findAllCategories());
+        model.addAttribute("regularHolidays", regularHolidayService.findAllRegularHolidays());
         return "admin/restaurants/register";
     }
 
@@ -92,6 +99,7 @@ public class AdminRestaurantController {
         // 入力エラーがある場合は登録画面を再表示
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryService.findAllCategories());
+            model.addAttribute("regularHolidays", regularHolidayService.findAllRegularHolidays());
             return "admin/restaurants/register";
         }
 
@@ -138,9 +146,12 @@ public class AdminRestaurantController {
             form.setSeatingCapacity(restaurant.getSeatingCapacity());
             // 既存のカテゴリIDをフォームへ設定
             form.setCategoryIds(categoryRestaurantService.findCategoryIdsByRestaurantOrderByIdAsc(restaurant));
+            // 既存の定休日IDをフォームへ設定
+            form.setRegularHolidayIds(regularHolidayRestaurantService.findRegularHolidayIdsByRestaurant(restaurant));
             model.addAttribute("restaurantEditForm", form);
             model.addAttribute("restaurant", restaurant);
             model.addAttribute("categories", categoryService.findAllCategories());
+            model.addAttribute("regularHolidays", regularHolidayService.findAllRegularHolidays());
             return "admin/restaurants/edit";
         } catch (IllegalArgumentException e) {
             // 店舗が存在しない場合は一覧へリダイレクトしメッセージを表示
@@ -158,6 +169,7 @@ public class AdminRestaurantController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("restaurant", adminRestaurantService.getRestaurant(id));
             model.addAttribute("categories", categoryService.findAllCategories());
+            model.addAttribute("regularHolidays", regularHolidayService.findAllRegularHolidays());
             return "admin/restaurants/edit";
         }
         adminRestaurantService.update(id, form);
