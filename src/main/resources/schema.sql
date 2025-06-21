@@ -59,7 +59,8 @@ CREATE TABLE IF NOT EXISTS category_restaurant (
     restaurant_id INT NOT NULL,
     category_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_restaurant_category (restaurant_id, category_id),
     CONSTRAINT fk_cat_res_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurants(id),
     CONSTRAINT fk_cat_res_category FOREIGN KEY (category_id) REFERENCES categories(id)
 );

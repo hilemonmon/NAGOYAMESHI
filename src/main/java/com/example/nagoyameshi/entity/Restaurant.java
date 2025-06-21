@@ -2,6 +2,12 @@ package com.example.nagoyameshi.entity;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import com.example.nagoyameshi.entity.CategoryRestaurant;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,6 +50,11 @@ public class Restaurant {
     private LocalTime closingTime;
 
     private Integer seatingCapacity;
+
+    // 店舗に紐づくカテゴリ情報。追加順で取得できるようid昇順で並び替える
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
+    private List<CategoryRestaurant> categoriesRestaurants;
 
     private LocalDateTime createdAt;
 

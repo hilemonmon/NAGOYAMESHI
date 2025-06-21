@@ -1,6 +1,7 @@
 package com.example.nagoyameshi.service;
 
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,9 @@ public interface CategoryService {
 
     /** 全カテゴリをページ取得する。 */
     Page<Category> findAllCategories(Pageable pageable);
+
+    /** 全カテゴリをリストで取得する。 */
+    List<Category> findAllCategories();
 
     /**
      * キーワードで部分一致検索する。
