@@ -1,6 +1,6 @@
 package com.example.nagoyameshi.entity;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.example.nagoyameshi.entity.base.BaseTimestampEntity;
 
 @Entity
 @Table(name = "category_restaurant")
@@ -21,20 +22,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CategoryRestaurant {
+public class CategoryRestaurant extends BaseTimestampEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    // 主キー。自動採番される
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
+    @JoinColumn(name = "restaurant_id") // restaurants テーブルの主キーを参照
     private Restaurant restaurant;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id") // categories テーブルの主キーを参照
     private Category category;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

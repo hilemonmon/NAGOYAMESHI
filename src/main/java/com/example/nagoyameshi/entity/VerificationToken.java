@@ -1,6 +1,5 @@
 package com.example.nagoyameshi.entity;
 
-import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.example.nagoyameshi.entity.base.BaseTimestampEntity;
 
 @Entity
 @Table(name = "verification_tokens")
@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class VerificationToken {
+public class VerificationToken extends BaseTimestampEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // 主キー。IDENTITY方式で自動採番される
@@ -35,12 +35,4 @@ public class VerificationToken {
     // 認証用に発行したトークンを保持
     @Column(nullable = false, unique = true)
     private String token;
-
-    // レコード作成日時
-    @Column(name = "created_at")
-    private Timestamp createdAt;
-
-    // レコード更新日時
-    @Column(name = "updated_at")
-    private Timestamp updatedAt;
 }

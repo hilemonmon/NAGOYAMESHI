@@ -1,6 +1,5 @@
 package com.example.nagoyameshi.service;
 
-import java.sql.Timestamp;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -24,14 +23,9 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     /** {@inheritDoc} */
     @Override
     public void createVerificationToken(User user, String token) {
-        // 現在時刻を Timestamp 型で取得
-        Timestamp now = new Timestamp(System.currentTimeMillis());
-
         VerificationToken vToken = VerificationToken.builder()
                 .user(user)
                 .token(token)
-                .createdAt(now)
-                .updatedAt(now)
                 .build();
         // JPA を通じて保存
         verificationTokenRepository.save(vToken);

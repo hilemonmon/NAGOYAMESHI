@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.example.nagoyameshi.entity.base.BaseTimeEntity;
 
 @Entity
 @Table(name = "reservations")
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Reservation {
+public class Reservation extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,7 +39,4 @@ public class Reservation {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

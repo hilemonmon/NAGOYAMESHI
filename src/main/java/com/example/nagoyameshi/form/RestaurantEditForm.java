@@ -1,6 +1,7 @@
 package com.example.nagoyameshi.form;
 
 import java.time.LocalTime;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,12 +10,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 店舗編集フォームの入力内容を保持するクラス。
  * 基本的なバリデーションは登録時と同様。
  */
 @Data
+@NoArgsConstructor
 public class RestaurantEditForm {
     /** 店舗名 */
     @NotBlank(message = "店舗名を入力してください。")
@@ -57,4 +60,7 @@ public class RestaurantEditForm {
     /** 座席数 */
     @NotNull(message = "座席数を入力してください。")
     private Integer seatingCapacity;
+
+    /** 選択されたカテゴリIDのリスト */
+    private List<Integer> categoryIds;
 }

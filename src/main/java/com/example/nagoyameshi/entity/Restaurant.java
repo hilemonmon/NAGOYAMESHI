@@ -1,7 +1,12 @@
 package com.example.nagoyameshi.entity;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import com.example.nagoyameshi.entity.CategoryRestaurant;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.example.nagoyameshi.entity.base.BaseTimeEntity;
 
 @Entity
 @Table(name = "restaurants")
@@ -20,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Restaurant {
+public class Restaurant extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,7 +51,8 @@ public class Restaurant {
 
     private Integer seatingCapacity;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
+    // 店舗に紐づくカテゴリ情報。追加順で取得できるようid昇順で並び替える
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
+    private List<CategoryRestaurant> categoriesRestaurants;
 }
