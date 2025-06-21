@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.nagoyameshi.entity.Restaurant;
 import com.example.nagoyameshi.service.CategoryRestaurantService;
+import com.example.nagoyameshi.service.RegularHolidayRestaurantService;
 import com.example.nagoyameshi.form.RestaurantEditForm;
 import com.example.nagoyameshi.form.RestaurantRegisterForm;
 import com.example.nagoyameshi.repository.RestaurantRepository;
@@ -33,6 +34,7 @@ public class AdminRestaurantServiceImpl implements AdminRestaurantService {
 
     private final RestaurantRepository restaurantRepository;
     private final CategoryRestaurantService categoryRestaurantService;
+    private final RegularHolidayRestaurantService regularHolidayRestaurantService;
 
     /** {@inheritDoc} */
     @Override
@@ -71,6 +73,10 @@ public class AdminRestaurantServiceImpl implements AdminRestaurantService {
         // カテゴリが選択されていれば中間テーブルを作成
         if (form.getCategoryIds() != null) {
             categoryRestaurantService.createCategoriesRestaurants(form.getCategoryIds(), saved);
+        }
+        // 定休日が選択されていれば中間テーブルを作成
+        if (form.getRegularHolidayIds() != null) {
+            regularHolidayRestaurantService.createRegularHolidaysRestaurants(form.getRegularHolidayIds(), saved);
         }
         return saved;
     }
@@ -123,6 +129,8 @@ public class AdminRestaurantServiceImpl implements AdminRestaurantService {
         Restaurant saved = restaurantRepository.save(restaurant);
         // 既存のカテゴリ情報をフォーム内容と同期
         categoryRestaurantService.syncCategoriesRestaurants(form.getCategoryIds(), saved);
+        // 定休日情報をフォーム内容と同期
+        regularHolidayRestaurantService.syncRegularHolidaysRestaurants(form.getRegularHolidayIds(), saved);
         return saved;
     }
 
