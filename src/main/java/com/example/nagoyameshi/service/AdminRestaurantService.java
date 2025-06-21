@@ -39,6 +39,33 @@ public interface AdminRestaurantService {
     Restaurant create(RestaurantRegisterForm form);
 
     /**
+     * フォーム内容を基に店舗を登録するエイリアスメソッド。
+     * 課題で使用するため {@link #create(RestaurantRegisterForm)} と同じ動作を行う。
+     *
+     * @param form 入力された店舗情報
+     * @return 登録した店舗
+     */
+    Restaurant createRestaurant(RestaurantRegisterForm form);
+
+    /**
+     * 価格設定が妥当か確認する。
+     *
+     * @param lowestPrice  最低価格
+     * @param highestPrice 最高価格
+     * @return 妥当なら true
+     */
+    boolean isValidPrices(Integer lowestPrice, Integer highestPrice);
+
+    /**
+     * 営業時間の設定が妥当か確認する。
+     *
+     * @param opening 開店時間
+     * @param closing 閉店時間
+     * @return 妥当なら true
+     */
+    boolean isValidBusinessHours(java.time.LocalTime opening, java.time.LocalTime closing);
+
+    /**
      * 既存店舗を更新する。
      *
      * @param id   更新対象の店舗ID
