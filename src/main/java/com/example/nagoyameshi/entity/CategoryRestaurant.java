@@ -1,6 +1,6 @@
 package com.example.nagoyameshi.entity;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,17 +24,20 @@ import lombok.NoArgsConstructor;
 public class CategoryRestaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    // 主キー。自動採番される
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
+    @JoinColumn(name = "restaurant_id") // restaurants テーブルの主キーを参照
     private Restaurant restaurant;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id") // categories テーブルの主キーを参照
     private Category category;
 
-    private LocalDateTime createdAt;
+    // レコード作成日時
+    private Timestamp createdAt;
 
-    private LocalDateTime updatedAt;
+    // レコード更新日時
+    private Timestamp updatedAt;
 }

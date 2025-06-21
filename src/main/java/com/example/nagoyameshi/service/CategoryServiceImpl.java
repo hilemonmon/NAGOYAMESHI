@@ -1,6 +1,7 @@
 package com.example.nagoyameshi.service;
 
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Page<Category> findAllCategories(Pageable pageable) {
         return categoryRepository.findAll(pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Category> findAllCategories() {
+        return categoryRepository.findAll();
     }
 
     /** {@inheritDoc} */
