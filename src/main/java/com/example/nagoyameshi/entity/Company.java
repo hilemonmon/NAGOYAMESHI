@@ -1,6 +1,5 @@
 package com.example.nagoyameshi.entity;
 
-import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.example.nagoyameshi.entity.base.BaseTimeEntity;
 
 @Entity
 @Table(name = "companies")
@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Company {
+public class Company extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,8 +37,4 @@ public class Company {
     private String business;
 
     private String numberOfEmployees;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

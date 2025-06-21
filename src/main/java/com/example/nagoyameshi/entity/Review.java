@@ -1,6 +1,5 @@
 package com.example.nagoyameshi.entity;
 
-import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.example.nagoyameshi.entity.base.BaseTimeEntity;
 
 @Entity
 @Table(name = "reviews")
@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Review {
+public class Review extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,7 +38,4 @@ public class Review {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

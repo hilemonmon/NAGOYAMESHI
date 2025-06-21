@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -67,8 +66,6 @@ public class AdminRestaurantServiceImpl implements AdminRestaurantService {
                 .openingTime(form.getOpeningTime())
                 .closingTime(form.getClosingTime())
                 .seatingCapacity(form.getSeatingCapacity())
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
         Restaurant saved = restaurantRepository.save(restaurant);
         // カテゴリが選択されていれば中間テーブルを作成
@@ -122,7 +119,6 @@ public class AdminRestaurantServiceImpl implements AdminRestaurantService {
         restaurant.setOpeningTime(form.getOpeningTime());
         restaurant.setClosingTime(form.getClosingTime());
         restaurant.setSeatingCapacity(form.getSeatingCapacity());
-        restaurant.setUpdatedAt(LocalDateTime.now());
 
         Restaurant saved = restaurantRepository.save(restaurant);
         // 既存のカテゴリ情報をフォーム内容と同期

@@ -1,8 +1,6 @@
 package com.example.nagoyameshi.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.sql.Timestamp;
 
 // 認証用の UserDetailsService 実装は security パッケージへ分離したため
 // ここではインターフェースを実装しない
@@ -43,8 +41,6 @@ public class UserServiceImpl implements UserService {
                 .password(encoded)
                 .role(role)
                 .enabled(false)
-                .createdAt(java.time.LocalDateTime.now())
-                .updatedAt(java.time.LocalDateTime.now())
                 .build();
         userRepository.save(user);
 
@@ -54,14 +50,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createVerificationToken(User user, String token) {
-        // 現在時刻を Timestamp で取得
-        Timestamp now = new Timestamp(System.currentTimeMillis());
-
         VerificationToken vToken = VerificationToken.builder()
                 .user(user)
                 .token(token)
-                .createdAt(now)
-                .updatedAt(now)
                 .build();
         verificationTokenRepository.save(vToken);
     }
@@ -91,8 +82,6 @@ public class UserServiceImpl implements UserService {
                 .role(role)
                 // メール認証前のため、アカウントを無効状態で作成
                 .enabled(false)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
 
         // ユーザーを保存して生成されたエンティティを返す

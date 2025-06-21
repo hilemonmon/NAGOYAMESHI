@@ -1,7 +1,5 @@
 package com.example.nagoyameshi.service;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,8 +45,6 @@ public class CategoryRestaurantServiceImpl implements CategoryRestaurantService 
                 CategoryRestaurant cr = CategoryRestaurant.builder()
                         .restaurant(restaurant)
                         .category(category)
-                        .createdAt(Timestamp.valueOf(LocalDateTime.now()))
-                        .updatedAt(Timestamp.valueOf(LocalDateTime.now()))
                         .build();
                 categoryRestaurantRepository.save(cr);
             }

@@ -1,6 +1,5 @@
 package com.example.nagoyameshi.entity;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -19,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.example.nagoyameshi.entity.base.BaseTimeEntity;
 
 @Entity
 @Table(name = "restaurants")
@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Restaurant {
+public class Restaurant extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -56,7 +56,4 @@ public class Restaurant {
     @OrderBy("id ASC")
     private List<CategoryRestaurant> categoriesRestaurants;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

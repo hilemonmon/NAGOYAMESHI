@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.example.nagoyameshi.entity.base.BaseTimestampEntity;
 
 @Entity
 @Table(name = "category_restaurant")
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CategoryRestaurant {
+public class CategoryRestaurant extends BaseTimestampEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // 主キー。自動採番される
@@ -34,10 +35,4 @@ public class CategoryRestaurant {
     @ManyToOne
     @JoinColumn(name = "category_id") // categories テーブルの主キーを参照
     private Category category;
-
-    // レコード作成日時
-    private Timestamp createdAt;
-
-    // レコード更新日時
-    private Timestamp updatedAt;
 }
