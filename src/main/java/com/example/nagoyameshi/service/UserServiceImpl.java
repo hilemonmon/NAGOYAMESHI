@@ -1,6 +1,7 @@
 package com.example.nagoyameshi.service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 // 認証用の UserDetailsService 実装は security パッケージへ分離したため
 // ここではインターフェースを実装しない
@@ -12,6 +13,7 @@ import com.example.nagoyameshi.entity.Role;
 import com.example.nagoyameshi.entity.User;
 import com.example.nagoyameshi.entity.VerificationToken;
 import com.example.nagoyameshi.form.SignupForm;
+import com.example.nagoyameshi.form.UserEditForm;
 import com.example.nagoyameshi.repository.RoleRepository;
 import com.example.nagoyameshi.repository.UserRepository;
 import com.example.nagoyameshi.repository.VerificationTokenRepository;
@@ -71,9 +73,11 @@ public class UserServiceImpl implements UserService {
                 .postalCode(form.getPostalCode())
                 .address(form.getAddress())
                 .phoneNumber(form.getPhoneNumber())
+                // 誕生日は画面上で8桁の数字(yyyyMMdd)で入力されるため、
+                // BASIC_ISO_DATE で LocalDate へ変換する
                 .birthday(form.getBirthday() == null || form.getBirthday().isEmpty()
                         ? null
-                        : LocalDate.parse(form.getBirthday()))
+                        : LocalDate.parse(form.getBirthday(), DateTimeFormatter.BASIC_ISO_DATE))
                 .occupation(form.getOccupation() == null || form.getOccupation().isEmpty()
                         ? null
                         : form.getOccupation())
@@ -114,5 +118,43 @@ public class UserServiceImpl implements UserService {
             return passwordConfirmation == null;
         }
         return password.equals(passwordConfirmation);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public User updateUser(UserEditForm form, User user) {
+        user.setName(form.getName());
+        user.setFurigana(form.getFurigana());
+        user.setPostalCode(form.getPostalCode());
+        user.setAddress(form.getAddress());
+        user.setPhoneNumber(form.getPhoneNumber());
+        // 空文字の場合は null を設定する
+        if (form.getBirthday() == null || form.getBirthday().isEmpty()) {
+            // 入力が空の場合は誕生日を登録しない
+            user.setBirthday(null);
+        } else {
+            // 入力値は "yyyyMMdd" の8桁数字なので、BASIC_ISO_DATE で解析する
+            user.setBirthday(LocalDate.parse(form.getBirthday(),
+                    DateTimeFormatter.BASIC_ISO_DATE));
+        }
+        if (form.getOccupation() == null || form.getOccupation().isEmpty()) {
+            user.setOccupation(null);
+        } else {
+            user.setOccupation(form.getOccupation());
+        }
+        user.setEmail(form.getEmail());
+        return userRepository.save(user);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isEmailChanged(UserEditForm form, User currentUser) {
+        return !currentUser.getEmail().equals(form.getEmail());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
     }
 }
