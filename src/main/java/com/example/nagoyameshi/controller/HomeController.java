@@ -14,6 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import com.example.nagoyameshi.form.SignupForm;
 import com.example.nagoyameshi.service.UserService;
 import com.example.nagoyameshi.service.VerificationTokenService;
+import com.example.nagoyameshi.service.RestaurantService;
+import com.example.nagoyameshi.service.CategoryService;
+import org.springframework.data.domain.PageRequest;
 import com.example.nagoyameshi.event.SignupEventPublisher;
 
 import lombok.RequiredArgsConstructor;
@@ -28,9 +31,46 @@ public class HomeController {
     private final VerificationTokenService verificationTokenService;
     /** サインアップ完了時のイベント発行クラス */
     private final SignupEventPublisher signupEventPublisher;
+    /** 店舗関連の処理を行うサービス */
+    private final RestaurantService restaurantService;
+    /** カテゴリ関連の処理を行うサービス */
+    private final CategoryService categoryService;
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        // 評価が高い店舗: 現状では単純に先頭から6件取得
+        var highlyRatedRestaurants = restaurantService.getRestaurants(null)
+                .stream()
+                .limit(6)
+                .toList();
+
+        // 新規掲載店: 作成日時の降順で6件取得
+        var newRestaurants = restaurantService
+                .findAllRestaurantsByOrderByCreatedAtDesc(PageRequest.of(0, 6))
+                .getContent();
+
+        // 特定カテゴリの取得
+        var washoku = categoryService.findFirstCategoryByName("和食").orElse(null);
+        var udon = categoryService.findFirstCategoryByName("うどん").orElse(null);
+        var don = categoryService.findFirstCategoryByName("丼物").orElse(null);
+        var ramen = categoryService.findFirstCategoryByName("ラーメン").orElse(null);
+        var oden = categoryService.findFirstCategoryByName("おでん").orElse(null);
+        var fried = categoryService.findFirstCategoryByName("揚げ物").orElse(null);
+
+        // 全カテゴリ一覧
+        var categories = categoryService.findAllCategories();
+
+        // 取得したデータをビューへ渡す
+        model.addAttribute("highlyRatedRestaurants", highlyRatedRestaurants);
+        model.addAttribute("newRestaurants", newRestaurants);
+        model.addAttribute("washoku", washoku);
+        model.addAttribute("udon", udon);
+        model.addAttribute("don", don);
+        model.addAttribute("ramen", ramen);
+        model.addAttribute("oden", oden);
+        model.addAttribute("fried", fried);
+        model.addAttribute("categories", categories);
+
         return "index";
     }
 

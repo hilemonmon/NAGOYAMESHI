@@ -28,4 +28,12 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
      * @return もっとも新しいカテゴリ
      */
     Optional<Category> findFirstByOrderByIdDesc();
+
+    /**
+     * 指定された名前を持つ最初のカテゴリを取得します。
+     *
+     * @param name カテゴリ名
+     * @return 名前に一致するカテゴリ（最初の1件）
+     */
+    Optional<Category> findFirstByName(String name);
 }
