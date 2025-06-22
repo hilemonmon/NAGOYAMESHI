@@ -20,4 +20,12 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
      * @return 条件に合致した店舗のページ
      */
     Page<Restaurant> findByNameContaining(String name, Pageable pageable);
+
+    /**
+     * 作成日の降順で全ての店舗を取得し、ページング結果を返します。
+     *
+     * @param pageable ページ情報
+     * @return 作成日の降順で並んだ店舗ページ
+     */
+    Page<Restaurant> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }

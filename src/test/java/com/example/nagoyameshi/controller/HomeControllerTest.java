@@ -15,6 +15,16 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import com.example.nagoyameshi.service.UserService;
 import com.example.nagoyameshi.event.SignupEventPublisher;
 import com.example.nagoyameshi.service.VerificationTokenService;
+import com.example.nagoyameshi.service.RestaurantService;
+import com.example.nagoyameshi.service.CategoryService;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import java.util.List;
+import java.util.Optional;
+import com.example.nagoyameshi.entity.Category;
 
 @WebMvcTest(HomeController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -32,12 +42,39 @@ class HomeControllerTest {
     @MockitoBean
     private VerificationTokenService verificationTokenService;
 
+    // RestaurantService もモック化
+    @MockitoBean
+    private RestaurantService restaurantService;
+
+    // CategoryService もモック化
+    @MockitoBean
+    private CategoryService categoryService;
+
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     @DisplayName("未ログインの場合はトップページが正しく表示される")
     void 未ログインの場合はトップページが正しく表示される() throws Exception {
+        when(restaurantService.getRestaurants(null)).thenReturn(List.of());
+        when(restaurantService.findAllRestaurantsByOrderByCreatedAtDesc(any())).thenReturn(Page.empty());
+        Category dummyCategory = Category.builder().id(1L).name("dummy").build();
+        when(categoryService.findFirstCategoryByName(any())).thenReturn(Optional.of(dummyCategory));
+        when(categoryService.findAllCategories()).thenReturn(List.of());
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"));
+    }
+
+    @Test
+    @WithMockUser(username = "taro.samurai@example.com", roles = {"USER"})
+    @DisplayName("ログイン済み一般ユーザーでもトップページが正しく表示される")
+    void ログイン済み一般ユーザーでもトップページが正しく表示される() throws Exception {
+        when(restaurantService.getRestaurants(null)).thenReturn(List.of());
+        when(restaurantService.findAllRestaurantsByOrderByCreatedAtDesc(any())).thenReturn(Page.empty());
+        Category dummyCategory = Category.builder().id(1L).name("dummy").build();
+        when(categoryService.findFirstCategoryByName(any())).thenReturn(Optional.of(dummyCategory));
+        when(categoryService.findAllCategories()).thenReturn(List.of());
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"));

@@ -39,6 +39,14 @@ public interface CategoryService {
     /** 最後に登録されたカテゴリを取得する。 */
     Optional<Category> findFirstCategoryByOrderByIdDesc();
 
+    /**
+     * 名前を指定して最初に見つかったカテゴリを返します。
+     *
+     * @param name カテゴリ名
+     * @return 見つかったカテゴリ
+     */
+    Optional<Category> findFirstCategoryByName(String name);
+
     /** カテゴリを登録する。 */
     Category createCategory(CategoryRegisterForm form);
 
