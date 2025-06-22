@@ -6,8 +6,6 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
-import com.example.nagoyameshi.entity.CategoryRestaurant;
-import com.example.nagoyameshi.entity.RegularHolidayRestaurant;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,12 +16,14 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import com.example.nagoyameshi.entity.base.BaseTimeEntity;
 
 @Entity
 @Table(name = "restaurants")
 @Data
+@EqualsAndHashCode(callSuper = false) // タイムスタンプは等価判定に含めない
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

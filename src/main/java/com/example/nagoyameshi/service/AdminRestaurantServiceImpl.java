@@ -13,8 +13,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.nagoyameshi.entity.Restaurant;
-import com.example.nagoyameshi.service.CategoryRestaurantService;
-import com.example.nagoyameshi.service.RegularHolidayRestaurantService;
 import com.example.nagoyameshi.form.RestaurantEditForm;
 import com.example.nagoyameshi.form.RestaurantRegisterForm;
 import com.example.nagoyameshi.repository.RestaurantRepository;

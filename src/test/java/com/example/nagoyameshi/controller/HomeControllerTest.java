@@ -19,7 +19,6 @@ import com.example.nagoyameshi.service.RestaurantService;
 import com.example.nagoyameshi.service.CategoryService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import java.util.List;
