@@ -63,6 +63,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     /** {@inheritDoc} */
     @Override
+    public Optional<Category> findFirstCategoryByName(String name) {
+        return categoryRepository.findFirstByName(name);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public Category createCategory(CategoryRegisterForm form) {
         Category category = Category.builder()
                 .name(form.getName())
