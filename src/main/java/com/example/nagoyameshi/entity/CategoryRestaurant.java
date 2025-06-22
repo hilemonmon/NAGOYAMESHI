@@ -1,6 +1,5 @@
 package com.example.nagoyameshi.entity;
 
-import java.sql.Timestamp;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,12 +12,14 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import com.example.nagoyameshi.entity.base.BaseTimestampEntity;
 
 @Entity
 @Table(name = "category_restaurant")
 @Data
+@EqualsAndHashCode(callSuper = false) // BaseTimestampEntityのフィールドは除外
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

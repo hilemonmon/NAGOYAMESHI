@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import com.example.nagoyameshi.entity.base.BaseTimestampEntity;
 
@@ -21,6 +22,7 @@ import com.example.nagoyameshi.entity.base.BaseTimestampEntity;
 @Entity
 @Table(name = "regular_holiday_restaurant")
 @Data
+@EqualsAndHashCode(callSuper = false) // タイムスタンプは等価判定に含めない
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

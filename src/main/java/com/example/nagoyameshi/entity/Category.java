@@ -8,7 +8,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.CascadeType;
 import java.util.List;
-import com.example.nagoyameshi.entity.CategoryRestaurant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
