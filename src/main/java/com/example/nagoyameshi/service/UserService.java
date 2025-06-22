@@ -3,6 +3,7 @@ package com.example.nagoyameshi.service;
 import com.example.nagoyameshi.dto.RegisterRequest;
 import com.example.nagoyameshi.entity.User;
 import com.example.nagoyameshi.form.SignupForm;
+import com.example.nagoyameshi.form.UserEditForm;
 
 public interface UserService {
     User register(RegisterRequest request);
@@ -52,4 +53,30 @@ public interface UserService {
      * @return 一致していれば true
      */
     boolean isSamePassword(String password, String passwordConfirmation);
+
+    /**
+     * 入力フォームの内容でユーザー情報を更新する。
+     *
+     * @param form  入力された会員情報
+     * @param user  更新対象のユーザー
+     * @return 更新後のユーザーエンティティ
+     */
+    User updateUser(UserEditForm form, User user);
+
+    /**
+     * フォームに入力されたメールアドレスが現在のユーザーと異なるか確認する。
+     *
+     * @param form        入力フォーム
+     * @param currentUser 現在のユーザー
+     * @return 変更されていれば true
+     */
+    boolean isEmailChanged(UserEditForm form, User currentUser);
+
+    /**
+     * メールアドレスからユーザーを検索する。
+     *
+     * @param email メールアドレス
+     * @return 該当ユーザー（存在しない場合は null）
+     */
+    User findUserByEmail(String email);
 }
