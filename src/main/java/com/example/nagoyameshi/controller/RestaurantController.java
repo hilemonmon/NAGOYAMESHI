@@ -32,7 +32,8 @@ public class RestaurantController {
      */
     @GetMapping("/restaurants")
     public String index(
-            @PageableDefault(page = 0, size = 15, sort = "id", direction = Direction.ASC) Pageable pageable,
+            // ソート順はクエリメソッド内で指定するため、ここではページ番号とサイズのみ指定
+            @PageableDefault(page = 0, size = 15) Pageable pageable,
             @RequestParam(name = "keyword", required = false) String keyword,
             @RequestParam(name = "categoryId", required = false) Integer categoryId,
             @RequestParam(name = "price", required = false) Integer price,

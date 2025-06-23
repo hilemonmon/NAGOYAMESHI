@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 import org.springframework.stereotype.Service;
 
@@ -28,13 +29,16 @@ public class RestaurantServiceImpl implements RestaurantService {
     /** {@inheritDoc} */
     @Override
     public Page<Restaurant> findAllRestaurantsByOrderByCreatedAtDesc(Pageable pageable) {
-        return restaurantRepository.findAllByOrderByCreatedAtDesc(pageable);
+        // pageable が持つソート情報は使用しないため、ページ番号とサイズのみ再指定
+        Pageable fixed = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+        return restaurantRepository.findAllByOrderByCreatedAtDesc(fixed);
     }
 
     /** {@inheritDoc} */
     @Override
     public Page<Restaurant> findAllRestaurantsByOrderByLowestPriceAsc(Pageable pageable) {
-        return restaurantRepository.findAllByOrderByLowestPriceAsc(pageable);
+        Pageable fixed = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+        return restaurantRepository.findAllByOrderByLowestPriceAsc(fixed);
     }
 
     /** {@inheritDoc} */
@@ -42,8 +46,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     public Page<Restaurant> findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByCreatedAtDesc(String keyword,
             Pageable pageable) {
         String like = "%" + keyword + "%";
+        Pageable fixed = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
         return restaurantRepository
-                .findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByCreatedAtDesc(like, like, like, pageable);
+                .findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByCreatedAtDesc(like, like, like, fixed);
     }
 
     /** {@inheritDoc} */
@@ -51,33 +56,38 @@ public class RestaurantServiceImpl implements RestaurantService {
     public Page<Restaurant> findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByLowestPriceAsc(String keyword,
             Pageable pageable) {
         String like = "%" + keyword + "%";
+        Pageable fixed = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
         return restaurantRepository
-                .findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByLowestPriceAsc(like, like, like, pageable);
+                .findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByLowestPriceAsc(like, like, like, fixed);
     }
 
     /** {@inheritDoc} */
     @Override
     public Page<Restaurant> findRestaurantsByCategoryIdOrderByCreatedAtDesc(Integer categoryId, Pageable pageable) {
-        return restaurantRepository.findByCategoryIdOrderByCreatedAtDesc(categoryId, pageable);
+        Pageable fixed = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+        return restaurantRepository.findByCategoryIdOrderByCreatedAtDesc(categoryId, fixed);
     }
 
     /** {@inheritDoc} */
     @Override
     public Page<Restaurant> findRestaurantsByCategoryIdOrderByLowestPriceAsc(Integer categoryId, Pageable pageable) {
-        return restaurantRepository.findByCategoryIdOrderByLowestPriceAsc(categoryId, pageable);
+        Pageable fixed = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+        return restaurantRepository.findByCategoryIdOrderByLowestPriceAsc(categoryId, fixed);
     }
 
     /** {@inheritDoc} */
     @Override
     public Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByCreatedAtDesc(Integer price,
             Pageable pageable) {
-        return restaurantRepository.findByLowestPriceLessThanEqualOrderByCreatedAtDesc(price, pageable);
+        Pageable fixed = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+        return restaurantRepository.findByLowestPriceLessThanEqualOrderByCreatedAtDesc(price, fixed);
     }
 
     /** {@inheritDoc} */
     @Override
     public Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByLowestPriceAsc(Integer price,
             Pageable pageable) {
-        return restaurantRepository.findByLowestPriceLessThanEqualOrderByLowestPriceAsc(price, pageable);
+        Pageable fixed = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+        return restaurantRepository.findByLowestPriceLessThanEqualOrderByLowestPriceAsc(price, fixed);
     }
 }
