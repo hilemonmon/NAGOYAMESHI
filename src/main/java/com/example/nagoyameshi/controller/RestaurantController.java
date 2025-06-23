@@ -7,7 +7,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.nagoyameshi.entity.Restaurant;
 import com.example.nagoyameshi.service.CategoryService;
@@ -83,5 +85,24 @@ public class RestaurantController {
         model.addAttribute("price", price);
         model.addAttribute("order", sortOrder);
         return "restaurants/index";
+    }
+
+    /**
+     * 店舗詳細ページを表示する。
+     *
+     * @param id   表示する店舗の ID
+     * @param model モデルオブジェクト
+     * @param redirectAttributes リダイレクト時に渡す属性
+     * @return 詳細画面テンプレート名または一覧へのリダイレクト
+     */
+    @GetMapping("/restaurants/{id}")
+    public String show(@PathVariable Integer id, Model model, RedirectAttributes redirectAttributes) {
+        var restaurantOpt = restaurantService.findRestaurantById(id.longValue());
+        if (restaurantOpt.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "店舗が存在しません。");
+            return "redirect:/restaurants";
+        }
+        model.addAttribute("restaurant", restaurantOpt.get());
+        return "restaurants/show";
     }
 }

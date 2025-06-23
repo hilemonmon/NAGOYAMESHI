@@ -65,4 +65,12 @@ public interface RestaurantService {
      * 指定価格以下の店舗を最低価格昇順で取得します。
      */
     Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByLowestPriceAsc(Integer price, Pageable pageable);
+
+    /**
+     * 指定 ID の店舗を取得する。
+     *
+     * @param id 店舗 ID
+     * @return 見つかった店舗情報
+     */
+    java.util.Optional<Restaurant> findRestaurantById(Long id);
 }
