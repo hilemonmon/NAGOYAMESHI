@@ -80,4 +80,10 @@ public class RestaurantServiceImpl implements RestaurantService {
             Pageable pageable) {
         return restaurantRepository.findByLowestPriceLessThanEqualOrderByLowestPriceAsc(price, pageable);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public java.util.Optional<Restaurant> findRestaurantById(Long id) {
+        return restaurantRepository.findById(id);
+    }
 }
