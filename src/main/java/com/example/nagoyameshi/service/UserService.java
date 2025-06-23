@@ -79,4 +79,27 @@ public interface UserService {
      * @return 該当ユーザー（存在しない場合は null）
      */
     User findUserByEmail(String email);
+
+    /**
+     * Stripeの顧客IDをユーザーに保存する。
+     *
+     * @param user       更新対象のユーザー
+     * @param customerId Stripeで発行された顧客ID
+     */
+    void saveStripeCustomerId(User user, String customerId);
+
+    /**
+     * ユーザーのロールを更新する。
+     *
+     * @param user     更新対象のユーザー
+     * @param roleName 更新後のロール名
+     */
+    void updateRole(User user, String roleName);
+
+    /**
+     * ロール変更後に現在の認証情報を更新する。
+     *
+     * @param newRole 新しいロール名
+     */
+    void refreshAuthenticationByRole(String newRole);
 }
