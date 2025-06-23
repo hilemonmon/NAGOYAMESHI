@@ -30,4 +30,54 @@ public class RestaurantServiceImpl implements RestaurantService {
     public Page<Restaurant> findAllRestaurantsByOrderByCreatedAtDesc(Pageable pageable) {
         return restaurantRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page<Restaurant> findAllRestaurantsByOrderByLowestPriceAsc(Pageable pageable) {
+        return restaurantRepository.findAllByOrderByLowestPriceAsc(pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page<Restaurant> findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByCreatedAtDesc(String keyword,
+            Pageable pageable) {
+        String like = "%" + keyword + "%";
+        return restaurantRepository
+                .findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByCreatedAtDesc(like, like, like, pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page<Restaurant> findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByLowestPriceAsc(String keyword,
+            Pageable pageable) {
+        String like = "%" + keyword + "%";
+        return restaurantRepository
+                .findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByLowestPriceAsc(like, like, like, pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page<Restaurant> findRestaurantsByCategoryIdOrderByCreatedAtDesc(Integer categoryId, Pageable pageable) {
+        return restaurantRepository.findByCategoryIdOrderByCreatedAtDesc(categoryId, pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page<Restaurant> findRestaurantsByCategoryIdOrderByLowestPriceAsc(Integer categoryId, Pageable pageable) {
+        return restaurantRepository.findByCategoryIdOrderByLowestPriceAsc(categoryId, pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByCreatedAtDesc(Integer price,
+            Pageable pageable) {
+        return restaurantRepository.findByLowestPriceLessThanEqualOrderByCreatedAtDesc(price, pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByLowestPriceAsc(Integer price,
+            Pageable pageable) {
+        return restaurantRepository.findByLowestPriceLessThanEqualOrderByLowestPriceAsc(price, pageable);
+    }
 }

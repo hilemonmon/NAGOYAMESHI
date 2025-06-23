@@ -1,50 +1,91 @@
 package com.example.nagoyameshi.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-// 推奨される MockitoBean を利用してモックを作成
+import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.nagoyameshi.entity.Restaurant;
+import com.example.nagoyameshi.security.WebSecurityConfig;
+import com.example.nagoyameshi.security.UserDetailsServiceImpl;
+import com.example.nagoyameshi.security.UserDetailsImpl;
+import com.example.nagoyameshi.service.CategoryService;
 import com.example.nagoyameshi.service.RestaurantService;
 
+/**
+ * {@link RestaurantController} のアクセス権限を確認するテストクラス。
+ */
 @WebMvcTest(RestaurantController.class)
+@Import(WebSecurityConfig.class)
+@AutoConfigureMockMvc
 class RestaurantControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    // RestaurantService をモック化し、コンテキストに登録する
     @MockitoBean
     private RestaurantService restaurantService;
 
-    @WithMockUser(username = "testuser", roles = {"USER"})
-    @Test
-    @DisplayName("GET /restaurants は飲食店一覧を返す")
-    void 認証済みの場合は飲食店一覧を取得できる() throws Exception {
-        Restaurant r = Restaurant.builder().id(1L).name("Nagoya Ramen").description("desc").build();
-        when(restaurantService.getRestaurants("Ramen")).thenReturn(List.of(r));
+    @MockitoBean
+    private CategoryService categoryService;
 
-        mockMvc.perform(get("/restaurants").param("name", "Ramen"))
+    @MockitoBean
+    private UserDetailsServiceImpl userDetailsService;
+
+    /** 未ログインでもページが表示できることを確認 */
+    @Test
+    @DisplayName("未ログインでも店舗一覧ページを閲覧できる")
+    void 未ログインでも店舗一覧ページを閲覧できる() throws Exception {
+        when(restaurantService.findAllRestaurantsByOrderByCreatedAtDesc(any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(), PageRequest.of(0, 15), 0));
+        when(categoryService.findAllCategories()).thenReturn(List.of());
+
+        mockMvc.perform(get("/restaurants"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("Nagoya Ramen"));
+                .andExpect(view().name("restaurants/index"));
     }
 
+    /** 一般ユーザー（無料会員）が閲覧できることを確認 */
     @Test
-    @DisplayName("未認証の場合は401を返す")
-    void 未認証の場合は401を返す() throws Exception {
-        mockMvc.perform(get("/restaurants"))
-                .andExpect(status().isUnauthorized());
+    @DisplayName("一般ユーザーは店舗一覧ページを閲覧できる")
+    void 一般ユーザーは店舗一覧ページを閲覧できる() throws Exception {
+        when(restaurantService.findAllRestaurantsByOrderByCreatedAtDesc(any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(), PageRequest.of(0, 15), 0));
+        when(categoryService.findAllCategories()).thenReturn(List.of());
+
+        var userEntity = com.example.nagoyameshi.entity.User.builder()
+                .id(1L)
+                .name("侍 太郎")
+                .email("taro.samurai@example.com")
+                .build();
+        UserDetailsImpl principal = new UserDetailsImpl(userEntity, List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_FREE_MEMBER")));
+
+        mockMvc.perform(get("/restaurants").with(user(principal)))
+                .andExpect(status().isOk())
+                .andExpect(view().name("restaurants/index"));
+    }
+
+    /** 管理者ユーザーはアクセスできないことを確認 */
+    @Test
+    @DisplayName("管理者ユーザーは店舗一覧ページにアクセスできない")
+    void 管理者ユーザーは店舗一覧ページにアクセスできない() throws Exception {
+        mockMvc.perform(get("/restaurants").with(user("hanako.samurai@example.com").roles("ADMIN")))
+                .andExpect(status().isForbidden());
     }
 }

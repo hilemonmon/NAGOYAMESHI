@@ -46,6 +46,9 @@ public class WebSecurityConfig {
                                 "/signup/**",
                                 "/register"
                         ).permitAll()
+                        // 会員向け店舗一覧は誰でも閲覧可能（未ログイン含む）
+                        .requestMatchers("/restaurants/**")
+                            .hasAnyRole("ANONYMOUS", "FREE_MEMBER", "PAID_MEMBER")
                         // 管理画面のURLは管理者ロールのみ許可
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
