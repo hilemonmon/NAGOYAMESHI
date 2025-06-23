@@ -88,4 +88,51 @@ class RestaurantControllerTest {
         mockMvc.perform(get("/restaurants").with(user("hanako.samurai@example.com").roles("ADMIN")))
                 .andExpect(status().isForbidden());
     }
+
+    /** 未ログインでも店舗詳細ページを閲覧できることを確認 */
+    @Test
+    @DisplayName("未ログインでも店舗詳細ページを閲覧できる")
+    void 未ログインでも店舗詳細ページを閲覧できる() throws Exception {
+        var restaurant = Restaurant.builder()
+                .id(1L)
+                .categoriesRestaurants(List.of())
+                .regularHolidaysRestaurants(List.of())
+                .build();
+        when(restaurantService.findRestaurantById(1L)).thenReturn(java.util.Optional.of(restaurant));
+
+        mockMvc.perform(get("/restaurants/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("restaurants/show"));
+    }
+
+    /** 一般ユーザー（無料会員）は店舗詳細ページを閲覧できることを確認 */
+    @Test
+    @DisplayName("一般ユーザーは店舗詳細ページを閲覧できる")
+    void 一般ユーザーは店舗詳細ページを閲覧できる() throws Exception {
+        var restaurant = Restaurant.builder()
+                .id(1L)
+                .categoriesRestaurants(List.of())
+                .regularHolidaysRestaurants(List.of())
+                .build();
+        when(restaurantService.findRestaurantById(1L)).thenReturn(java.util.Optional.of(restaurant));
+
+        var userEntity = com.example.nagoyameshi.entity.User.builder()
+                .id(1L)
+                .name("侍 太郎")
+                .email("taro.samurai@example.com")
+                .build();
+        UserDetailsImpl principal = new UserDetailsImpl(userEntity, List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_FREE_MEMBER")));
+
+        mockMvc.perform(get("/restaurants/1").with(user(principal)))
+                .andExpect(status().isOk())
+                .andExpect(view().name("restaurants/show"));
+    }
+
+    /** 管理者ユーザーは店舗詳細ページにアクセスできないことを確認 */
+    @Test
+    @DisplayName("管理者ユーザーは店舗詳細ページにアクセスできない")
+    void 管理者ユーザーは店舗詳細ページにアクセスできない() throws Exception {
+        mockMvc.perform(get("/restaurants/1").with(user("hanako.samurai@example.com").roles("ADMIN")))
+                .andExpect(status().isForbidden());
+    }
 }
