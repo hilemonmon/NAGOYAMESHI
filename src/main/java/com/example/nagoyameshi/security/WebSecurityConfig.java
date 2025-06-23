@@ -46,6 +46,14 @@ public class WebSecurityConfig {
                                 "/signup/**",
                                 "/register"
                         ).permitAll()
+                        .requestMatchers("/subscription/register", "/subscription/create")
+                            .hasRole("FREE_MEMBER")
+                        .requestMatchers(
+                                "/subscription/edit",
+                                "/subscription/update",
+                                "/subscription/cancel",
+                                "/subscription/delete")
+                            .hasRole("PAID_MEMBER")
                         // 会員向け店舗一覧は誰でも閲覧可能（未ログイン含む）
                         .requestMatchers("/restaurants/**")
                             .hasAnyRole("ANONYMOUS", "FREE_MEMBER", "PAID_MEMBER")

@@ -157,4 +157,35 @@ public class UserServiceImpl implements UserService {
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void saveStripeCustomerId(User user, String customerId) {
+        user.setStripeCustomerId(customerId);
+        userRepository.save(user);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateRole(User user, String roleName) {
+        Role role = roleRepository.findByName(roleName).orElseThrow();
+        user.setRole(role);
+        userRepository.save(user);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void refreshAuthenticationByRole(String newRole) {
+        org.springframework.security.core.Authentication current =
+                org.springframework.security.core.context.SecurityContextHolder
+                        .getContext().getAuthentication();
+        java.util.List<org.springframework.security.core.authority.SimpleGrantedAuthority> authorities =
+                new java.util.ArrayList<>();
+        authorities.add(new org.springframework.security.core.authority.SimpleGrantedAuthority(newRole));
+        org.springframework.security.core.Authentication newAuth =
+                new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
+                        current.getPrincipal(), current.getCredentials(), authorities);
+        org.springframework.security.core.context.SecurityContextHolder.getContext()
+                .setAuthentication(newAuth);
+    }
 }
