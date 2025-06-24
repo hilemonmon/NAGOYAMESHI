@@ -55,6 +55,9 @@ public class WebSecurityConfig {
                                 "/subscription/cancel",
                                 "/subscription/delete")
                             .hasRole("PAID_MEMBER")
+                        // 予約機能はログイン会員のみ
+                        .requestMatchers("/reservations/**", "/restaurants/*/reservations/**")
+                            .hasAnyRole("FREE_MEMBER", "PAID_MEMBER")
                         // レビュー機能はログイン会員のみ
                         .requestMatchers("/restaurants/*/reviews/**")
                             .hasAnyRole("FREE_MEMBER", "PAID_MEMBER")

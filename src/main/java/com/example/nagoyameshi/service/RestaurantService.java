@@ -80,6 +80,23 @@ public interface RestaurantService {
     Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByAverageScoreDesc(Integer price,
             Pageable pageable);
 
+    /** 予約数の多い順で全店舗を取得する。 */
+    Page<Restaurant> findAllRestaurantsOrderByReservationCountDesc(Pageable pageable);
+
+    /** キーワード検索結果を予約数の多い順で取得する。 */
+    Page<Restaurant> findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByReservationCountDesc(
+            String keyword, Pageable pageable);
+
+    /** カテゴリID指定で予約数の多い順に並べる。 */
+    Page<Restaurant> findRestaurantsByCategoryIdOrderByReservationCountDesc(Integer categoryId, Pageable pageable);
+
+    /** 価格上限以下で予約数の多い順に並べる。 */
+    Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByReservationCountDesc(Integer price,
+            Pageable pageable);
+
+    /** 指定店舗の定休日 dayIndex 一覧を取得する。 */
+    java.util.List<Integer> findRegularHolidayDayIndicesByRestaurantId(Long restaurantId);
+
     /**
      * 指定 ID の店舗を取得する。
      *

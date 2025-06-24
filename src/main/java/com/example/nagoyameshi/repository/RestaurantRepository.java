@@ -199,4 +199,75 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     Page<Restaurant> findByLowestPriceLessThanEqualOrderByAverageScoreDesc(
             @Param("price") Integer price,
             Pageable pageable);
+
+    /**
+     * 予約数が多い順に全店舗を取得する。
+     */
+    @Query("""
+            SELECT r FROM Restaurant r
+            LEFT JOIN r.reservations res
+            GROUP BY r.id
+            ORDER BY COUNT(res.id) DESC
+            """)
+    Page<Restaurant> findAllOrderByReservationCountDesc(Pageable pageable);
+
+    /**
+     * キーワード検索結果を予約数が多い順で取得する。
+     */
+    @Query("""
+            SELECT DISTINCT r FROM Restaurant r
+            LEFT JOIN r.categoriesRestaurants cr
+            LEFT JOIN cr.category c
+            LEFT JOIN r.reservations res
+            WHERE r.name LIKE %:name%
+               OR r.address LIKE %:address%
+               OR c.name LIKE %:categoryName%
+            GROUP BY r.id
+            ORDER BY COUNT(res.id) DESC
+            """)
+    Page<Restaurant> findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByReservationCountDesc(
+            @Param("name") String name,
+            @Param("address") String address,
+            @Param("categoryName") String categoryName,
+            Pageable pageable);
+
+    /**
+     * カテゴリ検索結果を予約数が多い順で取得する。
+     */
+    @Query("""
+            SELECT r FROM Restaurant r
+            JOIN r.categoriesRestaurants cr
+            LEFT JOIN r.reservations res
+            WHERE cr.category.id = :categoryId
+            GROUP BY r.id
+            ORDER BY COUNT(res.id) DESC
+            """)
+    Page<Restaurant> findByCategoryIdOrderByReservationCountDesc(
+            @Param("categoryId") Integer categoryId,
+            Pageable pageable);
+
+    /**
+     * 指定価格以下の店舗を予約数が多い順で取得する。
+     */
+    @Query("""
+            SELECT r FROM Restaurant r
+            LEFT JOIN r.reservations res
+            WHERE r.lowestPrice <= :price
+            GROUP BY r.id
+            ORDER BY COUNT(res.id) DESC
+            """)
+    Page<Restaurant> findByLowestPriceLessThanEqualOrderByReservationCountDesc(
+            @Param("price") Integer price,
+            Pageable pageable);
+
+    /**
+     * 指定店舗の定休日 dayIndex を取得する。
+     */
+    @Query("""
+            SELECT rh.dayIndex FROM Restaurant r
+            JOIN r.regularHolidaysRestaurants rhr
+            JOIN rhr.regularHoliday rh
+            WHERE r.id = :restaurantId
+            """)
+    List<Integer> findRegularHolidayDayIndicesByRestaurantId(@Param("restaurantId") Long restaurantId);
 }
