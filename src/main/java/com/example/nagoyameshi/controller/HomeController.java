@@ -38,11 +38,10 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(Model model) {
-        // 評価が高い店舗: 現状では単純に先頭から6件取得
-        var highlyRatedRestaurants = restaurantService.getRestaurants(null)
-                .stream()
-                .limit(6)
-                .toList();
+        // 評価が高い店舗: レビュー平均点の高い順に6件取得
+        var highlyRatedRestaurants = restaurantService
+                .findAllRestaurantsByOrderByAverageScoreDesc(PageRequest.of(0, 6))
+                .getContent();
 
         // 新規掲載店: 作成日時の降順で6件取得
         var newRestaurants = restaurantService

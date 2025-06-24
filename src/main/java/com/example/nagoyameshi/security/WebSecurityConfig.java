@@ -54,6 +54,9 @@ public class WebSecurityConfig {
                                 "/subscription/cancel",
                                 "/subscription/delete")
                             .hasRole("PAID_MEMBER")
+                        // レビュー機能はログイン会員のみ
+                        .requestMatchers("/restaurants/*/reviews/**")
+                            .hasAnyRole("FREE_MEMBER", "PAID_MEMBER")
                         // 会員向け店舗一覧は誰でも閲覧可能（未ログイン含む）
                         .requestMatchers("/restaurants/**")
                             .hasAnyRole("ANONYMOUS", "FREE_MEMBER", "PAID_MEMBER")

@@ -67,12 +67,13 @@ CREATE TABLE IF NOT EXISTS category_restaurant (
 
 CREATE TABLE IF NOT EXISTS reviews (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    content TEXT,
-    score INT,
+    content TEXT NOT NULL,
+    score INT NOT NULL,
     restaurant_id INT NOT NULL,
     user_id INT NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_restaurant_user (restaurant_id, user_id),
     CONSTRAINT fk_reviews_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurants(id),
     CONSTRAINT fk_reviews_user FOREIGN KEY (user_id) REFERENCES users(id)
 );

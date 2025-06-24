@@ -83,6 +83,34 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     /** {@inheritDoc} */
     @Override
+    public Page<Restaurant> findAllRestaurantsByOrderByAverageScoreDesc(Pageable pageable) {
+        return restaurantRepository.findAllByOrderByAverageScoreDesc(pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page<Restaurant> findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByAverageScoreDesc(
+            String keyword, Pageable pageable) {
+        String like = "%" + keyword + "%";
+        return restaurantRepository.findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByAverageScoreDesc(
+                like, like, like, pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page<Restaurant> findRestaurantsByCategoryIdOrderByAverageScoreDesc(Integer categoryId, Pageable pageable) {
+        return restaurantRepository.findByCategoryIdOrderByAverageScoreDesc(categoryId, pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByAverageScoreDesc(Integer price,
+            Pageable pageable) {
+        return restaurantRepository.findByLowestPriceLessThanEqualOrderByAverageScoreDesc(price, pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public java.util.Optional<Restaurant> findRestaurantById(Long id) {
         return restaurantRepository.findById(id);
     }

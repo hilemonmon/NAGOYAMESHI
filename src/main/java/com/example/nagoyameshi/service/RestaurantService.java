@@ -66,6 +66,20 @@ public interface RestaurantService {
      */
     Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByLowestPriceAsc(Integer price, Pageable pageable);
 
+    /** 平均評価の降順で店舗を取得する。 */
+    Page<Restaurant> findAllRestaurantsByOrderByAverageScoreDesc(Pageable pageable);
+
+    /** キーワード検索を行い平均評価の降順で店舗を取得する。 */
+    Page<Restaurant> findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByAverageScoreDesc(String keyword,
+            Pageable pageable);
+
+    /** カテゴリID指定で平均評価の降順に並べる。 */
+    Page<Restaurant> findRestaurantsByCategoryIdOrderByAverageScoreDesc(Integer categoryId, Pageable pageable);
+
+    /** 予算上限以下で平均評価の降順に並べる。 */
+    Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByAverageScoreDesc(Integer price,
+            Pageable pageable);
+
     /**
      * 指定 ID の店舗を取得する。
      *

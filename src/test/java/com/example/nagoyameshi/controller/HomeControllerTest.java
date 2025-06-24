@@ -55,7 +55,7 @@ class HomeControllerTest {
     @Test
     @DisplayName("未ログインの場合はトップページが正しく表示される")
     void 未ログインの場合はトップページが正しく表示される() throws Exception {
-        when(restaurantService.getRestaurants(null)).thenReturn(List.of());
+        when(restaurantService.findAllRestaurantsByOrderByAverageScoreDesc(any())).thenReturn(Page.empty());
         when(restaurantService.findAllRestaurantsByOrderByCreatedAtDesc(any())).thenReturn(Page.empty());
         Category dummyCategory = Category.builder().id(1L).name("dummy").build();
         when(categoryService.findFirstCategoryByName(any())).thenReturn(Optional.of(dummyCategory));
@@ -69,7 +69,7 @@ class HomeControllerTest {
     @WithMockUser(username = "taro.samurai@example.com", roles = {"USER"})
     @DisplayName("ログイン済み一般ユーザーでもトップページが正しく表示される")
     void ログイン済み一般ユーザーでもトップページが正しく表示される() throws Exception {
-        when(restaurantService.getRestaurants(null)).thenReturn(List.of());
+        when(restaurantService.findAllRestaurantsByOrderByAverageScoreDesc(any())).thenReturn(Page.empty());
         when(restaurantService.findAllRestaurantsByOrderByCreatedAtDesc(any())).thenReturn(Page.empty());
         Category dummyCategory = Category.builder().id(1L).name("dummy").build();
         when(categoryService.findFirstCategoryByName(any())).thenReturn(Optional.of(dummyCategory));
