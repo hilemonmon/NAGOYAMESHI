@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -178,7 +179,7 @@ class AdminRestaurantControllerTest {
     @Test
     @DisplayName("未ログインの場合は店舗を登録せずにログインページにリダイレクトする")
     void 未ログインの店舗登録はログインにリダイレクト() throws Exception {
-        mockMvc.perform(post("/admin/restaurants/create"))
+        mockMvc.perform(post("/admin/restaurants/create").with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
     }
@@ -186,7 +187,7 @@ class AdminRestaurantControllerTest {
     @Test
     @DisplayName("一般ユーザーは店舗を登録できず403エラー")
     void 一般ユーザーは店舗を登録できない() throws Exception {
-        mockMvc.perform(post("/admin/restaurants/create").with(user("user").roles("FREE_MEMBER")))
+        mockMvc.perform(post("/admin/restaurants/create").with(user("user").roles("FREE_MEMBER")).with(csrf()))
                 .andExpect(status().isForbidden());
     }
 
@@ -198,6 +199,7 @@ class AdminRestaurantControllerTest {
         when(adminRestaurantService.isValidBusinessHours(any(), any())).thenReturn(true);
 
         mockMvc.perform(multipart("/admin/restaurants/create")
+                        .with(csrf())
                         .with(user("admin").roles("ADMIN"))
                         .param("name", "name")
                         .param("description", "desc")
@@ -264,7 +266,7 @@ class AdminRestaurantControllerTest {
     @Test
     @DisplayName("未ログインの場合は店舗を更新せずにログインページにリダイレクトする")
     void 未ログインの店舗更新はログインにリダイレクト() throws Exception {
-        mockMvc.perform(post("/admin/restaurants/1/update"))
+        mockMvc.perform(post("/admin/restaurants/1/update").with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
     }
@@ -272,7 +274,7 @@ class AdminRestaurantControllerTest {
     @Test
     @DisplayName("一般ユーザーは店舗を更新できず403エラー")
     void 一般ユーザーは店舗を更新できない() throws Exception {
-        mockMvc.perform(post("/admin/restaurants/1/update").with(user("user").roles("FREE_MEMBER")))
+        mockMvc.perform(post("/admin/restaurants/1/update").with(user("user").roles("FREE_MEMBER")).with(csrf()))
                 .andExpect(status().isForbidden());
     }
 
@@ -283,6 +285,7 @@ class AdminRestaurantControllerTest {
                 .thenReturn(Restaurant.builder().id(1L).build());
 
         mockMvc.perform(multipart("/admin/restaurants/1/update")
+                        .with(csrf())
                         .with(user("admin").roles("ADMIN"))
                         .param("name", "name")
                         .param("description", "desc")
@@ -303,7 +306,7 @@ class AdminRestaurantControllerTest {
     @Test
     @DisplayName("未ログインの場合は店舗を削除せずにログインページにリダイレクトする")
     void 未ログインの店舗削除はログインにリダイレクト() throws Exception {
-        mockMvc.perform(post("/admin/restaurants/1/delete"))
+        mockMvc.perform(post("/admin/restaurants/1/delete").with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
     }
@@ -311,14 +314,14 @@ class AdminRestaurantControllerTest {
     @Test
     @DisplayName("一般ユーザーは店舗を削除できず403エラー")
     void 一般ユーザーは店舗を削除できない() throws Exception {
-        mockMvc.perform(post("/admin/restaurants/1/delete").with(user("user").roles("FREE_MEMBER")))
+        mockMvc.perform(post("/admin/restaurants/1/delete").with(user("user").roles("FREE_MEMBER")).with(csrf()))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @DisplayName("管理者は店舗削除後に一覧ページへリダイレクトされる")
     void 管理者は店舗削除後に一覧ページへリダイレクトされる() throws Exception {
-        mockMvc.perform(post("/admin/restaurants/1/delete").with(user("admin").roles("ADMIN")))
+        mockMvc.perform(post("/admin/restaurants/1/delete").with(user("admin").roles("ADMIN")).with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/restaurants"));
     }

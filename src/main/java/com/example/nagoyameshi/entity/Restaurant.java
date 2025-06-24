@@ -62,4 +62,23 @@ public class Restaurant extends BaseTimeEntity {
     @OrderBy("id ASC")
     private List<RegularHolidayRestaurant> regularHolidaysRestaurants;
 
+    // 店舗に紐づくレビュー。店舗削除時にあわせて削除される
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
+    private List<Review> reviews;
+
+    /**
+     * レビュー平均点を計算して返却する。レビューが無い場合は0.0。
+     *
+     * @return 平均スコア
+     */
+    @jakarta.persistence.Transient
+    public Double getAverageScore() {
+        if (reviews == null || reviews.isEmpty()) {
+            return 0.0;
+        }
+        return reviews.stream().mapToInt(Review::getScore).average().orElse(0.0);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.example.nagoyameshi.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +38,7 @@ class AuthControllerTest {
     @DisplayName("POST /register はステータス200を返す")
     void registerメソッドはステータス200を返す() throws Exception {
         String json = "{\"email\":\"a@example.com\",\"password\":\"pass\"}";
-        mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON).content(json))
+        mockMvc.perform(post("/register").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(status().isOk());
     }
 }

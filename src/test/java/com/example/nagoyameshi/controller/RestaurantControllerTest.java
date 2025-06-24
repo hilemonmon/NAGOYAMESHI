@@ -97,6 +97,7 @@ class RestaurantControllerTest {
                 .id(1L)
                 .categoriesRestaurants(List.of())
                 .regularHolidaysRestaurants(List.of())
+                .reviews(List.of())
                 .build();
         when(restaurantService.findRestaurantById(1L)).thenReturn(java.util.Optional.of(restaurant));
 
@@ -113,6 +114,7 @@ class RestaurantControllerTest {
                 .id(1L)
                 .categoriesRestaurants(List.of())
                 .regularHolidaysRestaurants(List.of())
+                .reviews(List.of())
                 .build();
         when(restaurantService.findRestaurantById(1L)).thenReturn(java.util.Optional.of(restaurant));
 
