@@ -3,6 +3,7 @@ package com.example.nagoyameshi.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -123,7 +124,7 @@ class UserControllerTest {
         UserDetailsImpl principal = new UserDetailsImpl(currentUser,
                 List.of(new SimpleGrantedAuthority("ROLE_FREE_MEMBER")));
 
-        mockMvc.perform(post("/user/update")
+        mockMvc.perform(post("/user/update").with(csrf())
                 .with(user(principal))
                 .param("name", "侍 太郎")
                 .param("furigana", "サムライ タロウ")
