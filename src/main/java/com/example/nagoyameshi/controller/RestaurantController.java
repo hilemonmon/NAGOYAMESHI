@@ -49,6 +49,9 @@ public class RestaurantController {
             if ("lowestPriceAsc".equals(sortOrder)) {
                 restaurantPage = restaurantService
                         .findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByLowestPriceAsc(keyword, pageable);
+            } else if ("ratingDesc".equals(sortOrder)) {
+                restaurantPage = restaurantService
+                        .findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByAverageScoreDesc(keyword, pageable);
             } else {
                 restaurantPage = restaurantService
                         .findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByCreatedAtDesc(keyword, pageable);
@@ -57,6 +60,8 @@ public class RestaurantController {
             // カテゴリ検索
             if ("lowestPriceAsc".equals(sortOrder)) {
                 restaurantPage = restaurantService.findRestaurantsByCategoryIdOrderByLowestPriceAsc(categoryId, pageable);
+            } else if ("ratingDesc".equals(sortOrder)) {
+                restaurantPage = restaurantService.findRestaurantsByCategoryIdOrderByAverageScoreDesc(categoryId, pageable);
             } else {
                 restaurantPage = restaurantService.findRestaurantsByCategoryIdOrderByCreatedAtDesc(categoryId, pageable);
             }
@@ -65,6 +70,9 @@ public class RestaurantController {
             if ("lowestPriceAsc".equals(sortOrder)) {
                 restaurantPage = restaurantService.findRestaurantsByLowestPriceLessThanEqualOrderByLowestPriceAsc(price,
                         pageable);
+            } else if ("ratingDesc".equals(sortOrder)) {
+                restaurantPage = restaurantService
+                        .findRestaurantsByLowestPriceLessThanEqualOrderByAverageScoreDesc(price, pageable);
             } else {
                 restaurantPage = restaurantService
                         .findRestaurantsByLowestPriceLessThanEqualOrderByCreatedAtDesc(price, pageable);
@@ -73,6 +81,8 @@ public class RestaurantController {
             // 検索なしの場合
             if ("lowestPriceAsc".equals(sortOrder)) {
                 restaurantPage = restaurantService.findAllRestaurantsByOrderByLowestPriceAsc(pageable);
+            } else if ("ratingDesc".equals(sortOrder)) {
+                restaurantPage = restaurantService.findAllRestaurantsByOrderByAverageScoreDesc(pageable);
             } else {
                 restaurantPage = restaurantService.findAllRestaurantsByOrderByCreatedAtDesc(pageable);
             }

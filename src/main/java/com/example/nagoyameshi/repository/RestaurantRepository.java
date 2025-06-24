@@ -139,4 +139,64 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
      * @return 検索結果ページ
      */
     Page<Restaurant> findByLowestPriceLessThanEqualOrderByLowestPriceAsc(Integer price, Pageable pageable);
+
+    /**
+     * 平均評価の高い順で全店舗を取得する。
+     */
+    @Query("""
+            SELECT r FROM Restaurant r
+            LEFT JOIN r.reviews rev
+            GROUP BY r.id
+            ORDER BY AVG(rev.score) DESC
+            """)
+    Page<Restaurant> findAllByOrderByAverageScoreDesc(Pageable pageable);
+
+    /**
+     * キーワード検索を行い平均評価の高い順で取得する。
+     */
+    @Query("""
+            SELECT DISTINCT r FROM Restaurant r
+            LEFT JOIN r.categoriesRestaurants cr
+            LEFT JOIN cr.category c
+            LEFT JOIN r.reviews rev
+            WHERE r.name LIKE %:name%
+               OR r.address LIKE %:address%
+               OR c.name LIKE %:categoryName%
+            GROUP BY r.id
+            ORDER BY AVG(rev.score) DESC
+            """)
+    Page<Restaurant> findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByAverageScoreDesc(
+            @Param("name") String name,
+            @Param("address") String address,
+            @Param("categoryName") String categoryName,
+            Pageable pageable);
+
+    /**
+     * カテゴリIDで検索し平均評価の高い順に並べる。
+     */
+    @Query("""
+            SELECT r FROM Restaurant r
+            JOIN r.categoriesRestaurants cr
+            LEFT JOIN r.reviews rev
+            WHERE cr.category.id = :categoryId
+            GROUP BY r.id
+            ORDER BY AVG(rev.score) DESC
+            """)
+    Page<Restaurant> findByCategoryIdOrderByAverageScoreDesc(
+            @Param("categoryId") Integer categoryId,
+            Pageable pageable);
+
+    /**
+     * 価格上限以下で平均評価の高い順に並べる。
+     */
+    @Query("""
+            SELECT r FROM Restaurant r
+            LEFT JOIN r.reviews rev
+            WHERE r.lowestPrice <= :price
+            GROUP BY r.id
+            ORDER BY AVG(rev.score) DESC
+            """)
+    Page<Restaurant> findByLowestPriceLessThanEqualOrderByAverageScoreDesc(
+            @Param("price") Integer price,
+            Pageable pageable);
 }
