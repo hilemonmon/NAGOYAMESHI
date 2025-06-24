@@ -5,7 +5,6 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
-import com.example.nagoyameshi.entity.Review;
 import jakarta.persistence.OrderBy;
 
 import jakarta.persistence.Entity;
