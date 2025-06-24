@@ -55,6 +55,9 @@ public class WebSecurityConfig {
                                 "/subscription/cancel",
                                 "/subscription/delete")
                             .hasRole("PAID_MEMBER")
+                        // 会社概要・利用規約ページは誰でも閲覧可能 (管理者を除く)
+                        .requestMatchers("/company", "/terms")
+                            .hasAnyRole("ANONYMOUS", "FREE_MEMBER", "PAID_MEMBER")
                         // 予約機能はログイン会員のみ
                         .requestMatchers("/reservations/**", "/restaurants/*/reservations/**")
                             .hasAnyRole("FREE_MEMBER", "PAID_MEMBER")
