@@ -26,6 +26,7 @@ import com.example.nagoyameshi.security.WebSecurityConfig;
 import com.example.nagoyameshi.security.UserDetailsServiceImpl;
 import com.example.nagoyameshi.security.UserDetailsImpl;
 import com.example.nagoyameshi.service.CategoryService;
+import com.example.nagoyameshi.service.FavoriteService;
 import com.example.nagoyameshi.service.RestaurantService;
 
 /**
@@ -47,6 +48,9 @@ class RestaurantControllerTest {
 
     @MockitoBean
     private UserDetailsServiceImpl userDetailsService;
+
+    @MockitoBean
+    private FavoriteService favoriteService;
 
     /** 未ログインでもページが表示できることを確認 */
     @Test

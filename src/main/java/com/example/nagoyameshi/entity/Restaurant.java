@@ -19,6 +19,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import com.example.nagoyameshi.entity.base.BaseTimeEntity;
+import com.example.nagoyameshi.entity.Favorite;
 
 @Entity
 @Table(name = "restaurants")
@@ -72,6 +73,11 @@ public class Restaurant extends BaseTimeEntity {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id ASC")
     private List<Reservation> reservations;
+
+    // 店舗に紐づくお気に入り。店舗削除時にあわせて削除される
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
+    private List<Favorite> favorites;
 
     /**
      * レビュー平均点を計算して返却する。レビューが無い場合は0.0。
