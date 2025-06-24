@@ -61,6 +61,9 @@ public class WebSecurityConfig {
                         // レビュー機能はログイン会員のみ
                         .requestMatchers("/restaurants/*/reviews/**")
                             .hasAnyRole("FREE_MEMBER", "PAID_MEMBER")
+                        // お気に入り機能はログイン会員のみ
+                        .requestMatchers("/favorites/**", "/restaurants/*/favorites/**")
+                            .hasAnyRole("FREE_MEMBER", "PAID_MEMBER")
                         // 会員向け店舗一覧は誰でも閲覧可能（未ログイン含む）
                         .requestMatchers("/restaurants/**")
                             .hasAnyRole("ANONYMOUS", "FREE_MEMBER", "PAID_MEMBER")

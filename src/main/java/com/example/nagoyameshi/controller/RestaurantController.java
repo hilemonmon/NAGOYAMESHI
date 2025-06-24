@@ -10,10 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.example.nagoyameshi.entity.Restaurant;
+import com.example.nagoyameshi.entity.Favorite;
+import com.example.nagoyameshi.entity.User;
+import com.example.nagoyameshi.security.UserDetailsImpl;
 import com.example.nagoyameshi.service.CategoryService;
 import com.example.nagoyameshi.service.RestaurantService;
+import com.example.nagoyameshi.service.FavoriteService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +33,8 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
     /** カテゴリ情報を扱うサービス */
     private final CategoryService categoryService;
+    /** お気に入り情報を扱うサービス */
+    private final FavoriteService favoriteService;
 
     /**
      * 店舗一覧ページを表示する。
@@ -122,7 +130,18 @@ public class RestaurantController {
             redirectAttributes.addFlashAttribute("errorMessage", "店舗が存在しません。");
             return "redirect:/restaurants";
         }
-        model.addAttribute("restaurant", restaurantOpt.get());
+        Restaurant restaurant = restaurantOpt.get();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Favorite favorite = null;
+        boolean isFavorite = false;
+        if (auth.getPrincipal() instanceof UserDetailsImpl principal) {
+            User user = principal.getUser();
+            favorite = favoriteService.findFavoriteByRestaurantAndUser(restaurant, user).orElse(null);
+            isFavorite = favorite != null;
+        }
+        model.addAttribute("restaurant", restaurant);
+        model.addAttribute("favorite", favorite);
+        model.addAttribute("isFavorite", isFavorite);
         return "restaurants/show";
     }
 }
