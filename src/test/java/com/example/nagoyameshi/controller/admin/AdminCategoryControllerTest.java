@@ -3,6 +3,7 @@ package com.example.nagoyameshi.controller.admin;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -86,7 +87,7 @@ class AdminCategoryControllerTest {
     @Test
     @DisplayName("未ログインの場合はカテゴリを登録せずにログインページにリダイレクトする")
     void 未ログインのカテゴリ登録はログインにリダイレクト() throws Exception {
-        mockMvc.perform(post("/admin/categories/create"))
+        mockMvc.perform(post("/admin/categories/create").with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
     }
@@ -94,7 +95,7 @@ class AdminCategoryControllerTest {
     @Test
     @DisplayName("一般ユーザーはカテゴリを登録できず403エラー")
     void 一般ユーザーはカテゴリを登録できない() throws Exception {
-        mockMvc.perform(post("/admin/categories/create").with(user("user").roles("FREE_MEMBER")))
+        mockMvc.perform(post("/admin/categories/create").with(user("user").roles("FREE_MEMBER")).with(csrf()))
                 .andExpect(status().isForbidden());
     }
 
@@ -105,6 +106,7 @@ class AdminCategoryControllerTest {
                 .thenReturn(Category.builder().id(1L).name("name").build());
 
         mockMvc.perform(post("/admin/categories/create")
+                        .with(csrf())
                         .with(user("admin").roles("ADMIN"))
                         .param("name", "name"))
                 .andExpect(status().is3xxRedirection())
@@ -116,7 +118,7 @@ class AdminCategoryControllerTest {
     @Test
     @DisplayName("未ログインの場合はカテゴリを更新せずにログインページにリダイレクトする")
     void 未ログインのカテゴリ更新はログインにリダイレクト() throws Exception {
-        mockMvc.perform(post("/admin/categories/1/update"))
+        mockMvc.perform(post("/admin/categories/1/update").with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
     }
@@ -124,7 +126,7 @@ class AdminCategoryControllerTest {
     @Test
     @DisplayName("一般ユーザーはカテゴリを更新できず403エラー")
     void 一般ユーザーはカテゴリを更新できない() throws Exception {
-        mockMvc.perform(post("/admin/categories/1/update").with(user("user").roles("FREE_MEMBER")))
+        mockMvc.perform(post("/admin/categories/1/update").with(user("user").roles("FREE_MEMBER")).with(csrf()))
                 .andExpect(status().isForbidden());
     }
 
@@ -136,6 +138,7 @@ class AdminCategoryControllerTest {
                 .thenReturn(Category.builder().id(1L).build());
 
         mockMvc.perform(post("/admin/categories/1/update")
+                        .with(csrf())
                         .with(user("admin").roles("ADMIN"))
                         .param("name", "name"))
                 .andExpect(status().is3xxRedirection())
@@ -147,7 +150,7 @@ class AdminCategoryControllerTest {
     @Test
     @DisplayName("未ログインの場合はカテゴリを削除せずにログインページにリダイレクトする")
     void 未ログインのカテゴリ削除はログインにリダイレクト() throws Exception {
-        mockMvc.perform(post("/admin/categories/1/delete"))
+        mockMvc.perform(post("/admin/categories/1/delete").with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
     }
@@ -155,7 +158,7 @@ class AdminCategoryControllerTest {
     @Test
     @DisplayName("一般ユーザーはカテゴリを削除できず403エラー")
     void 一般ユーザーはカテゴリを削除できない() throws Exception {
-        mockMvc.perform(post("/admin/categories/1/delete").with(user("user").roles("FREE_MEMBER")))
+        mockMvc.perform(post("/admin/categories/1/delete").with(user("user").roles("FREE_MEMBER")).with(csrf()))
                 .andExpect(status().isForbidden());
     }
 
@@ -164,7 +167,7 @@ class AdminCategoryControllerTest {
     void 管理者はカテゴリ削除後に一覧ページへリダイレクトされる() throws Exception {
         when(categoryService.findCategoryById(1L)).thenReturn(Optional.of(Category.builder().id(1L).build()));
 
-        mockMvc.perform(post("/admin/categories/1/delete").with(user("admin").roles("ADMIN")))
+        mockMvc.perform(post("/admin/categories/1/delete").with(user("admin").roles("ADMIN")).with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/categories"));
     }

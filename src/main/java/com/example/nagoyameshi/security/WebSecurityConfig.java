@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.Customizer;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,8 +33,8 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                // CSRF 保護は今回は無効化
-                .csrf(csrf -> csrf.disable())
+                // CSRF 保護を有効化して、すべてのPOSTリクエストを安全に処理
+                .csrf(Customizer.withDefaults())
                 // URL ごとのアクセス許可設定
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(

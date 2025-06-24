@@ -3,6 +3,7 @@ package com.example.nagoyameshi.controller.admin;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -111,7 +112,7 @@ class AdminTermControllerTest {
     @Test
     @DisplayName("未ログインの場合は利用規約を更新できずログインページにリダイレクトされる")
     void 未ログインの規約更新はログインにリダイレクト() throws Exception {
-        mockMvc.perform(post("/admin/terms/update"))
+        mockMvc.perform(post("/admin/terms/update").with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
     }
@@ -119,7 +120,7 @@ class AdminTermControllerTest {
     @Test
     @DisplayName("一般ユーザーは利用規約を更新できず403エラー")
     void 一般ユーザーは規約更新できない() throws Exception {
-        mockMvc.perform(post("/admin/terms/update").with(user("user").roles("FREE_MEMBER")))
+        mockMvc.perform(post("/admin/terms/update").with(user("user").roles("FREE_MEMBER")).with(csrf()))
                 .andExpect(status().isForbidden());
     }
 
@@ -130,6 +131,7 @@ class AdminTermControllerTest {
                 .thenReturn(Term.builder().id(1L).build());
 
         mockMvc.perform(post("/admin/terms/update")
+                        .with(csrf())
                         .with(user("admin").roles("ADMIN"))
                         .param("content", "text"))
                 .andExpect(status().is3xxRedirection())
