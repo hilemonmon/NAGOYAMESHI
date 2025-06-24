@@ -111,6 +111,41 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     /** {@inheritDoc} */
     @Override
+    public Page<Restaurant> findAllRestaurantsOrderByReservationCountDesc(Pageable pageable) {
+        return restaurantRepository.findAllOrderByReservationCountDesc(pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page<Restaurant> findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByReservationCountDesc(
+            String keyword, Pageable pageable) {
+        String like = "%" + keyword + "%";
+        return restaurantRepository.findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByReservationCountDesc(
+                like, like, like, pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page<Restaurant> findRestaurantsByCategoryIdOrderByReservationCountDesc(Integer categoryId,
+            Pageable pageable) {
+        return restaurantRepository.findByCategoryIdOrderByReservationCountDesc(categoryId, pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByReservationCountDesc(Integer price,
+            Pageable pageable) {
+        return restaurantRepository.findByLowestPriceLessThanEqualOrderByReservationCountDesc(price, pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public java.util.List<Integer> findRegularHolidayDayIndicesByRestaurantId(Long restaurantId) {
+        return restaurantRepository.findRegularHolidayDayIndicesByRestaurantId(restaurantId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public java.util.Optional<Restaurant> findRestaurantById(Long id) {
         return restaurantRepository.findById(id);
     }
