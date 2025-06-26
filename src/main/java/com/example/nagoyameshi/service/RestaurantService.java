@@ -80,6 +80,9 @@ public interface RestaurantService {
     Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByAverageScoreDesc(Integer price,
             Pageable pageable);
 
+    /** 全店舗数を取得する。 */
+    long countRestaurants();
+
     /** 予約数の多い順で全店舗を取得する。 */
     Page<Restaurant> findAllRestaurantsOrderByReservationCountDesc(Pageable pageable);
 
