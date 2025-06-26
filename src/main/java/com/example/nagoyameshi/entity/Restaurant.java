@@ -19,7 +19,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import com.example.nagoyameshi.entity.base.BaseTimeEntity;
-import com.example.nagoyameshi.entity.Favorite;
 
 @Entity
 @Table(name = "restaurants")
