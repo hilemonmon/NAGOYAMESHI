@@ -26,6 +26,8 @@
                                     </div>
                                     <div class="modal-footer">
                                         <form method="post"th:action="@{/admin/restaurants/__${restaurant.id}__/delete}">
+                                            <!-- CSRFトークンを含めることで、悪意あるリクエストから保護する -->
+                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                                             <button type="submit" class="btn text-white shadow-sm nagoyameshi-btn-danger">削除</button>
                                         </form>
                                     </div>
