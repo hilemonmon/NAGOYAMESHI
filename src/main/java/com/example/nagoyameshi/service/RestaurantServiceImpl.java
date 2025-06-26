@@ -149,4 +149,10 @@ public class RestaurantServiceImpl implements RestaurantService {
     public java.util.Optional<Restaurant> findRestaurantById(Long id) {
         return restaurantRepository.findById(id);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public long countRestaurants() {
+        return restaurantRepository.count();
+    }
 }
