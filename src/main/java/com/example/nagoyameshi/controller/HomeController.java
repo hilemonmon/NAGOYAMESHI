@@ -38,6 +38,17 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(Model model) {
+        // 管理者としてログインしている場合は管理画面へリダイレクト
+        var auth = org.springframework.security.core.context.SecurityContextHolder
+                .getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()
+                && !(auth instanceof org.springframework.security.authentication.AnonymousAuthenticationToken)) {
+            var user = userService.findUserByEmail(auth.getName());
+            if (user != null && "ROLE_ADMIN".equals(user.getRole().getName())) {
+                return "redirect:/admin";
+            }
+        }
+
         // 評価が高い店舗: レビュー平均点の高い順に6件取得
         var highlyRatedRestaurants = restaurantService
                 .findAllRestaurantsByOrderByAverageScoreDesc(PageRequest.of(0, 6))

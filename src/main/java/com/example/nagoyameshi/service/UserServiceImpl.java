@@ -175,6 +175,12 @@ public class UserServiceImpl implements UserService {
 
     /** {@inheritDoc} */
     @Override
+    public long countUsersByRole_Name(String roleName) {
+        return userRepository.countByRole_Name(roleName);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public void refreshAuthenticationByRole(String newRole) {
         org.springframework.security.core.Authentication current =
                 org.springframework.security.core.context.SecurityContextHolder

@@ -97,6 +97,14 @@ public interface UserService {
     void updateRole(User user, String roleName);
 
     /**
+     * ロール名から該当ユーザー数を取得する。
+     *
+     * @param roleName カウントしたいロール名
+     * @return ユーザー数
+     */
+    long countUsersByRole_Name(String roleName);
+
+    /**
      * ロール変更後に現在の認証情報を更新する。
      *
      * @param newRole 新しいロール名

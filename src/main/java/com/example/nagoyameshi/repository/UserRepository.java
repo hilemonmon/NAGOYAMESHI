@@ -32,4 +32,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
             String name,
             String furigana,
             Pageable pageable);
+
+    /**
+     * 指定したロール名を持つユーザーの数を返します。
+     *
+     * @param roleName 取得したいロール名
+     * @return 該当ユーザー数
+     */
+    long countByRole_Name(String roleName);
 }
