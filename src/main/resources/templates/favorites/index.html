@@ -22,7 +22,8 @@
                             </div>
                             <div class="modal-footer">
                                 <form method="post" action="" name="removeFavoriteForm">
-                                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                                    <!-- CSRFトークンが置かれている場合にのみ出力されます -->
+                                    <input type="hidden" name="_csrf" th:if="${_csrf != null}" th:value="${_csrf.token}" />
                                     <button type="submit" class="btn text-white shadow-sm nagoyameshi-btn-danger">解除</button>
                                 </form>
                             </div>

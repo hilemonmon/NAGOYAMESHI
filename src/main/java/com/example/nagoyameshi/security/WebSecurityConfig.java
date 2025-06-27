@@ -3,6 +3,7 @@ package com.example.nagoyameshi.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.Customizer;
@@ -24,6 +25,16 @@ public class WebSecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
 
     /**
+     * CSRF保護の有効・無効を切り替えるフラグです。
+     * application.properties の security.enable-csrf で設定できます。
+     * true を設定すると CSRF 保護が有効になります。
+     */
+    @Value("${security.enable-csrf:true}")
+    private boolean enableCsrf;
+
+    // CSRFを無効にした場合は，Thymeleafのテンプレートで _csrf オブジェクトが null になるため、th:if 等で存在確認を行う必要があります.
+
+    /**
      * アプリ全体のセキュリティフィルタチェーンを構成します。
      *
      * @param http HttpSecurity の設定オブジェクト
@@ -32,9 +43,15 @@ public class WebSecurityConfig {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // CSRF を有効にするかどうかはプロパティで切り替え
+        if (enableCsrf) {
+            http.csrf(Customizer.withDefaults());
+        } else {
+            // 一時的に CSRF を無効化する場合はこちらが実行されます
+            http.csrf(csrf -> csrf.disable());
+        }
+
         return http
-                // CSRF 保護を有効化して、すべてのPOSTリクエストを安全に処理
-                .csrf(Customizer.withDefaults())
                 // URL ごとのアクセス許可設定
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
