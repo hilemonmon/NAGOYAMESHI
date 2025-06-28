@@ -76,9 +76,23 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     /** {@inheritDoc} */
     @Override
+    public Page<Restaurant> findRestaurantsByHighestPriceLessThanEqualOrderByCreatedAtDesc(Integer price,
+            Pageable pageable) {
+        return restaurantRepository.findByHighestPriceLessThanEqualOrderByCreatedAtDesc(price, pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByLowestPriceAsc(Integer price,
             Pageable pageable) {
         return restaurantRepository.findByLowestPriceLessThanEqualOrderByLowestPriceAsc(price, pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page<Restaurant> findRestaurantsByHighestPriceLessThanEqualOrderByLowestPriceAsc(Integer price,
+            Pageable pageable) {
+        return restaurantRepository.findByHighestPriceLessThanEqualOrderByLowestPriceAsc(price, pageable);
     }
 
     /** {@inheritDoc} */
@@ -111,6 +125,13 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     /** {@inheritDoc} */
     @Override
+    public Page<Restaurant> findRestaurantsByHighestPriceLessThanEqualOrderByAverageScoreDesc(Integer price,
+            Pageable pageable) {
+        return restaurantRepository.findByHighestPriceLessThanEqualOrderByAverageScoreDesc(price, pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public Page<Restaurant> findAllRestaurantsOrderByReservationCountDesc(Pageable pageable) {
         return restaurantRepository.findAllOrderByReservationCountDesc(pageable);
     }
@@ -136,6 +157,13 @@ public class RestaurantServiceImpl implements RestaurantService {
     public Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByReservationCountDesc(Integer price,
             Pageable pageable) {
         return restaurantRepository.findByLowestPriceLessThanEqualOrderByReservationCountDesc(price, pageable);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Page<Restaurant> findRestaurantsByHighestPriceLessThanEqualOrderByReservationCountDesc(Integer price,
+            Pageable pageable) {
+        return restaurantRepository.findByHighestPriceLessThanEqualOrderByReservationCountDesc(price, pageable);
     }
 
     /** {@inheritDoc} */

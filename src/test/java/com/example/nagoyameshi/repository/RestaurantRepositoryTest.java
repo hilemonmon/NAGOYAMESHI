@@ -29,4 +29,19 @@ class RestaurantRepositoryTest {
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getName()).isEqualTo("Nagoya Ramen");
     }
+
+    @Test
+    @DisplayName("findByHighestPriceLessThanEqualOrderByCreatedAtDesc は最高価格以下で検索できる")
+    void findByHighestPriceLessThanEqualOrderByCreatedAtDesc_は最高価格以下で検索できる() {
+        Restaurant r1 = Restaurant.builder().name("A").highestPrice(3000).build();
+        Restaurant r2 = Restaurant.builder().name("B").highestPrice(4000).build();
+        restaurantRepository.saveAll(List.of(r1, r2));
+
+        List<Restaurant> result = restaurantRepository
+                .findByHighestPriceLessThanEqualOrderByCreatedAtDesc(3500, org.springframework.data.domain.Pageable.unpaged())
+                .getContent();
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getName()).isEqualTo("A");
+    }
 }
