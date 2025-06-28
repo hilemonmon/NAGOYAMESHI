@@ -62,9 +62,19 @@ public interface RestaurantService {
     Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByCreatedAtDesc(Integer price, Pageable pageable);
 
     /**
+     * 指定価格以下の店舗（最高価格基準）を作成日降順で取得します。
+     */
+    Page<Restaurant> findRestaurantsByHighestPriceLessThanEqualOrderByCreatedAtDesc(Integer price, Pageable pageable);
+
+    /**
      * 指定価格以下の店舗を最低価格昇順で取得します。
      */
     Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByLowestPriceAsc(Integer price, Pageable pageable);
+
+    /**
+     * 指定価格以下の店舗（最高価格基準）を最低価格昇順で取得します。
+     */
+    Page<Restaurant> findRestaurantsByHighestPriceLessThanEqualOrderByLowestPriceAsc(Integer price, Pageable pageable);
 
     /** 平均評価の降順で店舗を取得する。 */
     Page<Restaurant> findAllRestaurantsByOrderByAverageScoreDesc(Pageable pageable);
@@ -78,6 +88,10 @@ public interface RestaurantService {
 
     /** 予算上限以下で平均評価の降順に並べる。 */
     Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByAverageScoreDesc(Integer price,
+            Pageable pageable);
+
+    /** 予算上限以下で平均評価の降順に並べる（最高価格基準）。 */
+    Page<Restaurant> findRestaurantsByHighestPriceLessThanEqualOrderByAverageScoreDesc(Integer price,
             Pageable pageable);
 
     /** 全店舗数を取得する。 */
@@ -95,6 +109,10 @@ public interface RestaurantService {
 
     /** 価格上限以下で予約数の多い順に並べる。 */
     Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByReservationCountDesc(Integer price,
+            Pageable pageable);
+
+    /** 価格上限以下で予約数の多い順に並べる（最高価格基準）。 */
+    Page<Restaurant> findRestaurantsByHighestPriceLessThanEqualOrderByReservationCountDesc(Integer price,
             Pageable pageable);
 
     /** 指定店舗の定休日 dayIndex 一覧を取得する。 */

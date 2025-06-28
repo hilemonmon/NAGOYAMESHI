@@ -81,17 +81,17 @@ public class RestaurantController {
         } else if (price != null) {
             // 予算検索
             if ("lowestPriceAsc".equals(sortOrder)) {
-                restaurantPage = restaurantService.findRestaurantsByLowestPriceLessThanEqualOrderByLowestPriceAsc(price,
+                restaurantPage = restaurantService.findRestaurantsByHighestPriceLessThanEqualOrderByLowestPriceAsc(price,
                         pageable);
             } else if ("ratingDesc".equals(sortOrder)) {
                 restaurantPage = restaurantService
-                        .findRestaurantsByLowestPriceLessThanEqualOrderByAverageScoreDesc(price, pageable);
+                        .findRestaurantsByHighestPriceLessThanEqualOrderByAverageScoreDesc(price, pageable);
             } else if ("popularDesc".equals(sortOrder)) {
                 restaurantPage = restaurantService
-                        .findRestaurantsByLowestPriceLessThanEqualOrderByReservationCountDesc(price, pageable);
+                        .findRestaurantsByHighestPriceLessThanEqualOrderByReservationCountDesc(price, pageable);
             } else {
                 restaurantPage = restaurantService
-                        .findRestaurantsByLowestPriceLessThanEqualOrderByCreatedAtDesc(price, pageable);
+                        .findRestaurantsByHighestPriceLessThanEqualOrderByCreatedAtDesc(price, pageable);
             }
         } else {
             // 検索なしの場合

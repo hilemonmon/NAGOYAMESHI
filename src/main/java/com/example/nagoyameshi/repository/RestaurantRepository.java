@@ -132,6 +132,15 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     Page<Restaurant> findByLowestPriceLessThanEqualOrderByCreatedAtDesc(Integer price, Pageable pageable);
 
     /**
+     * 指定した価格以下の店舗（最高価格基準）を作成日の降順で取得します。
+     *
+     * @param price    予算上限
+     * @param pageable ページ情報
+     * @return 検索結果ページ
+     */
+    Page<Restaurant> findByHighestPriceLessThanEqualOrderByCreatedAtDesc(Integer price, Pageable pageable);
+
+    /**
      * 指定した価格以下の店舗を最低価格の昇順で取得します。
      *
      * @param price    予算上限
@@ -139,6 +148,15 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
      * @return 検索結果ページ
      */
     Page<Restaurant> findByLowestPriceLessThanEqualOrderByLowestPriceAsc(Integer price, Pageable pageable);
+
+    /**
+     * 指定した価格以下の店舗（最高価格基準）を最低価格の昇順で取得します。
+     *
+     * @param price    予算上限
+     * @param pageable ページ情報
+     * @return 検索結果ページ
+     */
+    Page<Restaurant> findByHighestPriceLessThanEqualOrderByLowestPriceAsc(Integer price, Pageable pageable);
 
     /**
      * 平均評価の高い順で全店舗を取得する。
@@ -201,6 +219,20 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
             Pageable pageable);
 
     /**
+     * 価格上限以下で平均評価の高い順に並べる（最高価格基準）。
+     */
+    @Query("""
+            SELECT r FROM Restaurant r
+            LEFT JOIN r.reviews rev
+            WHERE r.highestPrice <= :price
+            GROUP BY r.id
+            ORDER BY AVG(rev.score) DESC
+            """)
+    Page<Restaurant> findByHighestPriceLessThanEqualOrderByAverageScoreDesc(
+            @Param("price") Integer price,
+            Pageable pageable);
+
+    /**
      * 予約数が多い順に全店舗を取得する。
      */
     @Query("""
@@ -257,6 +289,20 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
             ORDER BY COUNT(res.id) DESC
             """)
     Page<Restaurant> findByLowestPriceLessThanEqualOrderByReservationCountDesc(
+            @Param("price") Integer price,
+            Pageable pageable);
+
+    /**
+     * 指定価格以下の店舗を予約数が多い順で取得する（最高価格基準）。
+     */
+    @Query("""
+            SELECT r FROM Restaurant r
+            LEFT JOIN r.reservations res
+            WHERE r.highestPrice <= :price
+            GROUP BY r.id
+            ORDER BY COUNT(res.id) DESC
+            """)
+    Page<Restaurant> findByHighestPriceLessThanEqualOrderByReservationCountDesc(
             @Param("price") Integer price,
             Pageable pageable);
 
