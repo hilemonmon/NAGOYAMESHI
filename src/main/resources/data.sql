@@ -109,6 +109,11 @@ INSERT IGNORE INTO users (id, name, furigana, postal_code, address, phone_number
 (99, '福田 順二', 'フクダ ジュンジ', '2200042', '神奈川県横浜市西区X-XX-XX', '09012345678', '1976-05-26', '漫画家', 'junji.fukuda@example.com', 'password', 1, false),
 (100, '石田 花音', 'イシダ カノン', '6500044', '兵庫県神戸市中央区X-XX-XX', '09012345678', '1977-06-20', 'アニメーター', 'kanon.ishida@example.com', 'password', 1, false);
 
+-- 次郎ユーザーのStripe顧客IDを設定
+UPDATE users
+SET stripe_customer_id = 'cus_Sa7aP5BzeLbYpR'
+WHERE email = 'jiro.samurai@example.com';
+
 INSERT IGNORE INTO verification_tokens (user_id, created_at, updated_at) VALUES
 (1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
