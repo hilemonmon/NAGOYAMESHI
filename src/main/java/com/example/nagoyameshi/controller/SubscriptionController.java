@@ -86,8 +86,15 @@ public class SubscriptionController {
             String email = SecurityContextHolder.getContext().getAuthentication().getName();
             User user = userService.findUserByEmail(email);
             PaymentMethod pm = stripeService.getDefaultPaymentMethod(user.getStripeCustomerId());
-            model.addAttribute("card", pm.getCard());
-            model.addAttribute("cardHolderName", pm.getBillingDetails().getName());
+            // ユーザーがまだ支払い方法を登録していない場合、pm は null になり得る
+            if (pm != null) {
+                model.addAttribute("card", pm.getCard());
+                model.addAttribute("cardHolderName", pm.getBillingDetails().getName());
+            } else {
+                // テンプレート側で null チェックできるよう、値を設定しない
+                model.addAttribute("card", null);
+                model.addAttribute("cardHolderName", null);
+            }
             return "subscription/edit";
         } catch (StripeException e) {
             redirectAttributes.addFlashAttribute("errorMessage", "情報取得に失敗しました。\n");
